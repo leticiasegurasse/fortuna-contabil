@@ -2,7 +2,7 @@ import { Phone, MessageCircle } from 'lucide-react';
 
 const FloatingContact = () => {
   return (
-    <div className="fixed bottom-6 right-6 z-40 space-y-3">
+    <div className="fixed bottom-20 md:bottom-6 right-6 z-40 space-y-3">
       <a
         href="https://wa.me/5531999999999"
         target="_blank"

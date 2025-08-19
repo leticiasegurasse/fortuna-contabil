@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Star, Users, Shield, Building, BarChart3, Lightbulb, FileText, Play, Award, Zap, Target, MessageCircle, FileText as FileTextIcon, CheckCircle2, TrendingUp } from 'lucide-react';
+import { ArrowRight, CheckCircle, Star, Users, Shield, Building, BarChart3, Lightbulb, FileText, Award, Zap, MessageCircle, FileText as FileTextIcon, CheckCircle2, TrendingUp } from 'lucide-react';
 import { ROUTES } from '../config/routes';
 
 const Home = () => {
@@ -65,23 +65,6 @@ const Home = () => {
     }
   ];
 
-  const features = [
-    {
-      icon: Zap,
-      title: 'Processo Rápido',
-      description: 'Abertura de empresa em até 48 horas'
-    },
-    {
-      icon: Shield,
-      title: '100% Seguro',
-      description: 'Seus dados protegidos com a máxima segurança'
-    },
-    {
-      icon: Target,
-      title: 'Foco no Cliente',
-      description: 'Atendimento personalizado para cada necessidade'
-    }
-  ];
 
   const processSteps = [
     {
@@ -117,26 +100,26 @@ const Home = () => {
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-accent-600 via-accent-700 to-accent-800 text-white py-20 overflow-hidden">
+      <section className="relative bg-background-500 py-20 overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary-500/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-accent-50/30 to-primary-50/20"></div>
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-accent-100/20 to-transparent"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-40 items-center">
+          <div className="flex flex-col lg:flex-row gap-16 items-center">
             <div className="flex-1 space-y-8">
-              <div className="inline-flex items-center px-4 py-2 bg-primary-500/20 rounded-full text-primary-200 text-sm font-medium mb-4">
+              <div className="inline-flex items-center px-4 py-2 bg-accent-100 rounded-full text-accent-600 text-sm font-medium mb-4">
                 <Award size={16} className="mr-2" />
                 Especialistas em MEI e Pequenas Empresas
               </div>
               
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl lg:text-6xl font-bold leading-tight text-secondary-500">
                 Contabilidade{' '}
-                <span className="text-primary-400">Descomplicada</span>
+                <span className="text-accent-500">Descomplicada</span>
                 {' '}para seu Negócio
               </h1>
               
-              <p className="text-xl text-accent-100 leading-relaxed">
+              <p className="text-xl text-neutral-500 leading-relaxed">
                 Especialistas em MEI e pequenas empresas. Atendimento humanizado, 
                 100% online e transparência total. Deixe sua contabilidade conosco 
                 e foque no que realmente importa: seu negócio.
@@ -145,14 +128,14 @@ const Home = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to={ROUTES.CONTACT}
-                  className="bg-primary-500 text-secondary-500 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary-600 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center shadow-lg"
+                  className="bg-accent-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-600 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center shadow-lg"
                 >
                   Fale Conosco
                   <ArrowRight size={20} className="ml-2" />
                 </Link>
                 <Link
                   to={ROUTES.SERVICES}
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-accent-600 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
+                  className="border-2 border-accent-500 text-accent-500 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-500 hover:text-white transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
                 >
                   Nossos Serviços
                 </Link>
@@ -161,37 +144,37 @@ const Home = () => {
             </div>
             
             <div className="flex-1 relative max-w-sm">
-              {/* Hero Image */}
+              {/* Hero Card */}
               <div className="relative">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl">
+                <div className="bg-white rounded-2xl p-8 border border-accent-100 shadow-xl">
                   <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold mb-2">Por que escolher a Fortuna?</h3>
-                    <p className="text-accent-200 text-sm">Assista ao vídeo e descubra</p>
+                    <h3 className="text-2xl font-bold mb-2 text-secondary-500">Por que escolher a Fortuna?</h3>
+                    <p className="text-neutral-500 text-sm">Assista ao vídeo e descubra</p>
                   </div>
                   
                   <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
-                      <CheckCircle size={20} className="text-primary-400 flex-shrink-0" />
-                      <span className="text-sm">Atendimento humanizado</span>
+                    <div className="flex items-center space-x-3 p-3 bg-accent-50 rounded-lg">
+                      <CheckCircle size={20} className="text-accent-500 flex-shrink-0" />
+                      <span className="text-sm text-secondary-500">Atendimento humanizado</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
-                      <CheckCircle size={20} className="text-primary-400 flex-shrink-0" />
-                      <span className="text-sm">100% online</span>
+                    <div className="flex items-center space-x-3 p-3 bg-accent-50 rounded-lg">
+                      <CheckCircle size={20} className="text-accent-500 flex-shrink-0" />
+                      <span className="text-sm text-secondary-500">100% online</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
-                      <CheckCircle size={20} className="text-primary-400 flex-shrink-0" />
-                      <span className="text-sm">Transparência total</span>
+                    <div className="flex items-center space-x-3 p-3 bg-accent-50 rounded-lg">
+                      <CheckCircle size={20} className="text-accent-500 flex-shrink-0" />
+                      <span className="text-sm text-secondary-500">Transparência total</span>
                     </div>
-                    <div className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg">
-                      <CheckCircle size={20} className="text-primary-400 flex-shrink-0" />
-                      <span className="text-sm">Especialistas em MEI</span>
+                    <div className="flex items-center space-x-3 p-3 bg-accent-50 rounded-lg">
+                      <CheckCircle size={20} className="text-accent-500 flex-shrink-0" />
+                      <span className="text-sm text-secondary-500">Especialistas em MEI</span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Floating Elements */}
-                <div className="absolute -top-4 -right-4 w-20 h-20 bg-primary-500/20 rounded-full blur-xl"></div>
-                <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-accent-500/20 rounded-full blur-xl"></div>
+                                 {/* Floating Elements */}
+                 <div className="absolute -top-4 -right-4 w-20 h-20 bg-primary-100 rounded-full blur-xl"></div>
+                 <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-accent-100 rounded-full blur-xl"></div>
               </div>
               
             </div>
@@ -226,22 +209,10 @@ const Home = () => {
                 
                 <div className="relative z-10 bg-background-500 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center">
                   {/* Step Number */}
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-6 mx-auto ${
-                    step.color === 'primary' 
-                      ? 'bg-primary-100 text-primary-600' 
-                      : 'bg-accent-100 text-accent-600'
-                  } group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full mb-6 mx-auto bg-accent-100 text-accent-600 group-hover:scale-110 transition-transform duration-300`}>
                     <span className="text-xl font-bold">{step.step}</span>
                   </div>
                   
-                  {/* Icon */}
-                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg mb-4 mx-auto ${
-                    step.color === 'primary' 
-                      ? 'bg-primary-50 text-primary-500' 
-                      : 'bg-accent-50 text-accent-500'
-                  }`}>
-                    <step.icon size={24} />
-                  </div>
                   
                   {/* Content */}
                   <h3 className="text-lg font-bold text-secondary-500 mb-3">
@@ -344,13 +315,13 @@ const Home = () => {
                 Especialistas em Contabilidade para Pequenos Negócios
               </h2>
               
-              <p className="text-lg text-neutral-500 leading-relaxed">
+              <p className="text-lg text-justify text-neutral-500 leading-relaxed">
                 Com 3 anos de experiência, somos especialistas em contabilidade para MEI e pequenas empresas. 
                 Nossa missão é descomplicar a gestão contábil, oferecendo soluções personalizadas e 
                 atendimento humanizado.
               </p>
               
-              <p className="text-lg text-neutral-500 leading-relaxed">
+              <p className="text-lg text-justify text-neutral-500 leading-relaxed">
                 Atendemos empreendedores em todo o Brasil com rapidez e eficiência, sempre mantendo 
                 a proximidade e transparência que são nossos pilares fundamentais.
               </p>
@@ -363,13 +334,6 @@ const Home = () => {
                   Conheça Nossa História
                   <ArrowRight size={20} className="ml-2" />
                 </Link>
-                <a
-                  href="#video"
-                  className="border-2 border-primary-500 text-primary-500 px-6 py-3 rounded-lg font-semibold hover:bg-primary-500 hover:text-white transition-all duration-300 inline-flex items-center"
-                >
-                  <Play size={20} className="mr-2" />
-                  Ver Vídeo
-                </a>
               </div>
             </div>
             
@@ -395,9 +359,9 @@ const Home = () => {
                         <p className="text-neutral-500 text-sm">Não tratamos você como mais um número</p>
                       </div>
                     </div>
-                    <div className="flex items-start space-x-3 p-4 bg-accent-50 rounded-lg">
-                      <div className="bg-accent-100 p-2 rounded-lg">
-                        <Shield size={20} className="text-accent-500" />
+                    <div className="flex items-start space-x-3 p-4 bg-primary-50 rounded-lg">
+                      <div className="bg-primary-100 p-2 rounded-lg">
+                        <Shield size={20} className="text-primary-500" />
                       </div>
                       <div>
                         <h4 className="font-semibold text-secondary-500">Transparência Total</h4>
@@ -425,57 +389,57 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-accent-100 rounded-full text-accent-600 text-sm font-medium mb-4">
-              Depoimentos
-            </div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4">
-              O que nossos clientes dizem
-            </h2>
-            <p className="text-xl text-neutral-500">
-              A satisfação dos nossos clientes é nossa maior conquista
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="bg-background-500 rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                <div className="flex items-center mb-6">
-                  <div className="flex items-center space-x-1 mr-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} size={16} className="text-primary-400 fill-current" />
-                    ))}
-                  </div>
-                  <div className="text-sm text-neutral-400">5.0</div>
-                </div>
-                
-                <p className="text-neutral-500 mb-6 leading-relaxed italic">
-                  "{testimonial.content}"
-                </p>
-                
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-200 to-accent-200 rounded-full flex items-center justify-center mr-4">
-                    <div className="w-10 h-10 bg-neutral-300 rounded-full flex items-center justify-center text-neutral-500 text-sm font-semibold">
-                      {testimonial.name.split(' ').map(n => n[0]).join('')}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-secondary-500">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-neutral-400">
-                      {testimonial.company}
-                    </div>
-                  </div>
-                </div>
+             {/* Testimonials Section */}
+       <section className="py-20 bg-gradient-to-br from-background-50 to-accent-50/20">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                       <div className="text-center mb-16">
+              <div className="inline-flex items-center px-4 py-2 bg-primary-100 rounded-full text-primary-600 text-sm font-medium mb-4">
+                Depoimentos
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+             <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4">
+               O que nossos clientes dizem
+             </h2>
+             <p className="text-xl text-neutral-500">
+               A satisfação dos nossos clientes é nossa maior conquista
+             </p>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+             {testimonials.map((testimonial) => (
+               <div key={testimonial.id} className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group border border-accent-100">
+                 <div className="flex items-center mb-6">
+                   <div className="flex items-center space-x-1 mr-4">
+                     {[...Array(testimonial.rating)].map((_, i) => (
+                       <Star key={i} size={16} className="text-primary-400 fill-current" />
+                     ))}
+                   </div>
+                   <div className="text-sm text-neutral-400">5.0</div>
+                 </div>
+                 
+                 <p className="text-neutral-500 mb-6 leading-relaxed italic">
+                   "{testimonial.content}"
+                 </p>
+                 
+                 <div className="flex items-center">
+                   <div className="w-12 h-12 bg-gradient-to-br from-primary-200 to-accent-200 rounded-full flex items-center justify-center mr-4">
+                     <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 text-sm font-semibold">
+                       {testimonial.name.split(' ').map(n => n[0]).join('')}
+                     </div>
+                   </div>
+                   <div>
+                     <div className="font-semibold text-secondary-500">
+                       {testimonial.name}
+                     </div>
+                     <div className="text-sm text-neutral-400">
+                       {testimonial.company}
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             ))}
+           </div>
+         </div>
+       </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-accent-500 text-white relative overflow-hidden">

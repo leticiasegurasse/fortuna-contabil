@@ -21,20 +21,20 @@ const AppRoutes = () => (
             <Routes>
           {/* Rotas com layout padrão */}
           <Route path={ROUTES.HOME} element={<DefaultLayout><Home /></DefaultLayout>} />
-          <Route path={ROUTES.ABOUT} element={<DefaultLayout><About /></DefaultLayout>} />
-          <Route path={ROUTES.SERVICES} element={<DefaultLayout><Services /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><About /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><Services /></DefaultLayout>} />
           
           {/* Rotas de serviços individuais */}
-          <Route path={ROUTES.SERVICE_OPENING} element={<DefaultLayout><ServiceOpening /></DefaultLayout>} />
-          <Route path={ROUTES.SERVICE_MEI} element={<DefaultLayout><ServiceMEI /></DefaultLayout>} />
-          <Route path={ROUTES.SERVICE_CONSULTING} element={<DefaultLayout><ServiceConsulting /></DefaultLayout>} />
-          <Route path={ROUTES.SERVICE_IR} element={<DefaultLayout><ServiceIR /></DefaultLayout>} />
-          <Route path={ROUTES.SERVICE_REGULARIZATION} element={<DefaultLayout><ServiceRegularization /></DefaultLayout>} />
-          <Route path={ROUTES.SERVICE_SMALL_BUSINESS} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceOpening /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceMEI /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceConsulting /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceIR /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceRegularization /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
           
-          <Route path={ROUTES.BLOG} element={<DefaultLayout><Blog /></DefaultLayout>} />
-          <Route path={ROUTES.CONTACT} element={<DefaultLayout><Contact /></DefaultLayout>} />
-          <Route path={ROUTES.CLIENT_AREA} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><Blog /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><Contact /></DefaultLayout>} />
+          <Route path={ROUTES.HOME} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
           
           {/* Rota 404 - Sem layout para ter design próprio */}
           <Route path="*" element={<NotFound />} />

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Heart } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { ROUTES } from '../config/routes';
 
 const Footer = () => {
@@ -10,10 +10,10 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Empresa */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
+          <div className="space-y-4 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start space-x-2">
               <img 
-                src="/src/assets/images/logos/icone.svg" 
+                src="/icone-dourado.png" 
                 alt="Fortuna Contábil" 
                 className="h-8 w-8"
               />
@@ -23,7 +23,7 @@ const Footer = () => {
               Especialistas em contabilidade para MEI e pequenas empresas. 
               Atendimento humanizado e 100% online em todo o Brasil.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 justify-center md:justify-start">
               <a href="#" className="text-neutral-300 hover:text-white transition-colors">
                 <Facebook size={20} />
               </a>
@@ -37,7 +37,7 @@ const Footer = () => {
           </div>
 
           {/* Serviços */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <h4 className="text-lg font-semibold">Nossos Serviços</h4>
             <ul className="space-y-2 text-sm text-neutral-200">
               <li>
@@ -69,7 +69,7 @@ const Footer = () => {
           </div>
 
           {/* Links Úteis */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <h4 className="text-lg font-semibold">Links Úteis</h4>
             <ul className="space-y-2 text-sm text-neutral-200">
               <li>
@@ -101,18 +101,18 @@ const Footer = () => {
           </div>
 
           {/* Contato */}
-          <div className="space-y-4">
+          <div className="space-y-4 text-center md:text-left">
             <h4 className="text-lg font-semibold">Contato</h4>
             <div className="space-y-3 text-sm text-neutral-200">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 justify-center md:justify-start">
                 <Phone size={16} className="text-primary-400" />
                 <span>(31) 99999-9999</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 justify-center md:justify-start">
                 <Mail size={16} className="text-primary-400" />
                 <span>contato@fortunacontabil.com.br</span>
               </div>
-              <div className="flex items-start space-x-2">
+              <div className="flex items-start space-x-2 justify-center md:justify-start">
                 <MapPin size={16} className="text-primary-400 mt-1" />
                 <span>
                   Belo Horizonte - MG<br />
@@ -125,14 +125,14 @@ const Footer = () => {
 
         {/* Linha divisória */}
         <div className="border-t border-neutral-600 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm text-neutral-300">
-              © {currentYear} Fortuna Contábil. Todos os direitos reservados.
-            </p>
-            <p className="text-sm text-neutral-300 flex items-center">
-              Desenvolvido com <Heart size={14} className="mx-1 text-red-500" /> para o seu negócio
-            </p>
-          </div>
+                  <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <p className="text-sm text-neutral-300 text-center md:text-left">
+            © {currentYear} Fortuna Contábil. Todos os direitos reservados.
+          </p>
+          <p className="text-sm text-neutral-300 flex items-center justify-center md:justify-start">
+            Desenvolvido e publicado por <a href="https://sgr.dev.br" target="_blank" className="text-primary-400 hover:text-white transition-colors ml-1">SGR.DEV</a>
+          </p>
+        </div>
         </div>
       </div>
     </footer>
