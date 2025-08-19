@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Manrope', sans-serif;
+  }
+  
+  body {
+    font-family: 'Manrope', sans-serif;
+  }
+}
+
+:root {
+  /* Fonte principal */
+  --font-family-primary: "Manrope", "Manrope Placeholder", sans-serif;
+  
+  /* Paleta de Cores Fortuna Contábil */
+  --color-primary: #C5A46D; /* Dourado (Primária – destaque) */
+  --color-secondary: #2E2E2E; /* Cinza Escuro (Secundária – texto) */
+  --color-accent: #3A6B52; /* Verde Elegante (Complementar – financeiro) */
+  --color-neutral: #6E6E6E; /* Cinza Médio (Neutro – apoio) */
+  --color-background: #F8F6F1; /* Branco Off-white (Fundo leve) */
+  
+  /* Variantes da cor primária (Dourado) */
+  --color-primary-50: #fdfbf7;
+  --color-primary-100: #faf7ed;
+  --color-primary-200: #f5eed8;
+  --color-primary-300: #eee2c0;
+  --color-primary-400: #e5d3a3;
+  --color-primary-500: #C5A46D; /* Cor principal */
+  --color-primary-600: #b8945a;
+  --color-primary-700: #a8834a;
+  --color-primary-800: #8f6f3d;
+  --color-primary-900: #755c33;
+  
+  /* Variantes da cor secundária (Cinza Escuro) */
+  --color-secondary-50: #f5f5f5;
+  --color-secondary-100: #e7e7e7;
+  --color-secondary-200: #d1d1d1;
+  --color-secondary-300: #b0b0b0;
+  --color-secondary-400: #888888;
+  --color-secondary-500: #2E2E2E; /* Cor principal */
+  --color-secondary-600: #1f1f1f;
+  --color-secondary-700: #171717;
+  --color-secondary-800: #0f0f0f;
+  --color-secondary-900: #080808;
+  
+  /* Variantes da cor accent (Verde Elegante) */
+  --color-accent-50: #f2f7f4;
+  --color-accent-100: #e6efea;
+  --color-accent-200: #bfd9cc;
+  --color-accent-300: #99c3ae;
+  --color-accent-400: #4d9a7a;
+  --color-accent-500: #3A6B52; /* Cor principal */
+  --color-accent-600: #2f5a44;
+  --color-accent-700: #254936;
+  --color-accent-800: #1b3828;
+  --color-accent-900: #11271a;
+  
+  /* Variantes da cor neutra (Cinza Médio) */
+  --color-neutral-50: #f8f8f8;
+  --color-neutral-100: #f0f0f0;
+  --color-neutral-200: #e0e0e0;
+  --color-neutral-300: #c8c8c8;
+  --color-neutral-400: #a0a0a0;
+  --color-neutral-500: #6E6E6E; /* Cor principal */
+  --color-neutral-600: #5a5a5a;
+  --color-neutral-700: #464646;
+  --color-neutral-800: #323232;
+  --color-neutral-900: #1e1e1e;
+  
+  /* Variantes da cor de fundo (Branco Off-white) */
+  --color-background-50: #fefefd;
+  --color-background-100: #fdfcfb;
+  --color-background-200: #faf9f5;
+  --color-background-300: #f6f4ed;
+  --color-background-400: #f1eee4;
+  --color-background-500: #F8F6F1; /* Cor principal */
+  --color-background-600: #e8e6e1;
+  --color-background-700: #d8d6d1;
+  --color-background-800: #c8c6c1;
+  --color-background-900: #b8b6b1;
+  
+  /* Cores neutras atualizadas */
+  --color-gray-50: #f8f6f1;
+  --color-gray-100: #f1eee4;
+  --color-gray-200: #e8e6e1;
+  --color-gray-300: #d8d6d1;
+  --color-gray-400: #c8c6c1;
+  --color-gray-500: #6E6E6E;
+  --color-gray-600: #5a5a5a;
+  --color-gray-700: #464646;
+  --color-gray-800: #323232;
+  --color-gray-900: #2E2E2E;
+  
+  /* Estados e feedback atualizados */
+  --color-success: #3A6B52;
+  --color-warning: #C5A46D;
+  --color-error: #dc2626;
+  --color-info: #3A6B52;
+}
+
