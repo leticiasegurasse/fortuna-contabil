@@ -21,7 +21,7 @@ const AppRoutes = () => (
             <Routes>
           {/* Rotas com layout padrão */}
           <Route path={ROUTES.HOME} element={<DefaultLayout><Home /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><About /></DefaultLayout>} />
+          <Route path={ROUTES.ABOUT} element={<DefaultLayout><About /></DefaultLayout>} />
           <Route path={ROUTES.HOME} element={<DefaultLayout><Services /></DefaultLayout>} />
           
           {/* Rotas de serviços individuais */}

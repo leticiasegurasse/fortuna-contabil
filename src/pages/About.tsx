@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
-import { CheckCircle, Users, Shield, TrendingUp, Award, Clock } from 'lucide-react';
-import { ROUTES } from '../config/routes';
+import { Users, Shield, TrendingUp, Award, Clock, Star, Target, Heart } from 'lucide-react';
+import sobreNosImg from '../assets/images/sobre_nos.jpg';
+import fundadorImg from '../assets/images/fundador.png';
+import SectionDivider from '../components/SectionDivider';
+import CTASection from '../components/CTASection';
 
 const About = () => {
   const values = [
@@ -21,34 +23,47 @@ const About = () => {
     }
   ];
 
-  const timeline = [
+  const diferenciais = [
     {
-      year: '2020',
-      title: 'Formação em Ciências Contábeis',
-      description: 'Júnior conclui sua formação acadêmica, preparando-se para atender o mercado com excelência.'
+      icon: Users,
+      title: 'Especialização em MEI',
+      description: 'Focamos em quem mais precisa de orientação: os pequenos empreendedores.',
+      color: 'primary'
     },
     {
-      year: '2021',
-      title: 'Início da Atuação Profissional',
-      description: 'Começa a conciliar a gestão da empresa com outras atividades, adquirindo experiência prática.'
+      icon: Shield,
+      title: '100% Online',
+      description: 'Atendemos empreendedores em todo o Brasil com rapidez e eficiência.',
+      color: 'accent'
     },
     {
-      year: '2022',
-      title: 'Dedicação Integral',
-      description: 'Com o crescimento no número de clientes, passa a dedicar-se integralmente ao negócio.'
+      icon: Clock,
+      title: 'Atendimento Rápido',
+      description: 'Sem perder o contato humano, oferecemos agilidade quando você precisa.',
+      color: 'primary'
     },
     {
-      year: '2023',
-      title: 'Expansão e Especialização',
-      description: 'Foca em MEI e pequenas empresas, desenvolvendo soluções personalizadas e especializadas.'
+      icon: TrendingUp,
+      title: 'Crescimento Organizado',
+      description: 'Ajudamos seu negócio a crescer de forma sustentável e organizada.',
+      color: 'accent'
     }
   ];
 
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-accent-600 via-accent-700 to-accent-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-20 h-[50vh] text-white flex items-center justify-center">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${sobreNosImg})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-accent-600/90 via-accent-700/85 to-accent-800/90"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl lg:text-6xl font-bold mb-6">
             Sobre a Fortuna Contábil
           </h1>
@@ -59,59 +74,14 @@ const About = () => {
         </div>
       </section>
 
-      {/* Missão, Visão e Valores */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Missão */}
-            <div className="text-center">
-              <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Award size={32} className="text-primary-500" />
-              </div>
-              <h3 className="text-2xl font-bold text-secondary-500 mb-4">Nossa Missão</h3>
-              <p className="text-neutral-500 leading-relaxed">
-                Descomplicar a gestão contábil para MEI e pequenas empresas, 
-                oferecendo soluções personalizadas e atendimento humanizado, 
-                permitindo que nossos clientes foquem no crescimento do seu negócio.
-              </p>
-            </div>
-
-            {/* Visão */}
-            <div className="text-center">
-              <div className="bg-accent-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <TrendingUp size={32} className="text-accent-500" />
-              </div>
-              <h3 className="text-2xl font-bold text-secondary-500 mb-4">Nossa Visão</h3>
-              <p className="text-neutral-500 leading-relaxed">
-                Ser referência em contabilidade para pequenos empreendedores, 
-                reconhecida pela excelência no atendimento, transparência e 
-                contribuição para o sucesso dos nossos clientes.
-              </p>
-            </div>
-
-            {/* Valores */}
-            <div className="text-center">
-              <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Shield size={32} className="text-primary-500" />
-              </div>
-              <h3 className="text-2xl font-bold text-secondary-500 mb-4">Nossos Valores</h3>
-              <p className="text-neutral-500 leading-relaxed">
-                Transparência, proximidade, excelência e compromisso com o 
-                crescimento organizado dos nossos clientes são os pilares 
-                que guiam nosso trabalho diário.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* História */}
       <section className="py-20 bg-background-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4">
-              Nossa História
+            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4 relative">
+              <span className="relative z-10">Nossa História</span>
             </h2>
+            <SectionDivider />
             <p className="text-xl text-neutral-500 max-w-3xl mx-auto">
               Conheça a trajetória da Fortuna Contábil e como nos tornamos 
               especialistas em atender pequenos empreendedores.
@@ -119,53 +89,63 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Texto da História */}
             <div>
-              <p className="text-lg text-neutral-500 mb-6 leading-relaxed">
-                Tenho 33 anos e sou formado em Ciências Contábeis desde o final de 2020. 
-                Iniciei minha atuação profissional em 2021, conciliando a gestão da empresa 
-                com outras atividades.
+              <p className="text-lg text-justify text-neutral-500 mb-6 leading-relaxed">
+                A Fortuna Contábil nasceu para transformar a relação dos pequenos negócios com a contabilidade.
+                Somos uma equipe apaixonada por simplificar a burocracia e ajudar empreendedores, MEIs e
+                pequenas empresas a crescerem com segurança e organização.
               </p>
-              <p className="text-lg text-neutral-500 mb-6 leading-relaxed">
-                Com o crescimento no número de clientes, passei a dedicar-me integralmente 
-                ao meu negócio, transformando-o em minha principal prioridade. Ao longo 
-                desse período, adquiri muita experiência no atendimento a pequenas e 
-                médias empresas.
+              <p className="text-lg text-justify text-neutral-500 mb-6 leading-relaxed">
+                Com atendimento personalizado e linguagem clara, cuidamos da parte fiscal, tributária e
+                financeira para que você possa focar no que realmente importa: o sucesso do seu negócio.
               </p>
-              <p className="text-lg text-neutral-500 leading-relaxed">
-                Desenvolvi soluções personalizadas e focadas nas necessidades de cada cliente. 
-                Essa trajetória tem resultado em um progresso constante da empresa, com 
-                aprimoramento contínuo dos processos e da qualidade do serviço prestado.
+              <p className="text-lg text-justify text-neutral-500 leading-relaxed">
+                Aqui, sua empresa tem apoio completo para estar sempre em dia com o governo, pagar menos
+                impostos e tomar decisões estratégicas com confiança.
+              </p>
+              <p className="text-lg text-justify text-neutral-500 leading-relaxed font-semibold mt-6">
+                Fortuna Contábil — sua parceira para crescer com segurança.
               </p>
             </div>
 
-            <div className="space-y-6">
-              {timeline.map((item, index) => (
-                <div key={index} className="flex items-start space-x-4">
-                  <div className="bg-accent-500 text-white px-4 py-2 rounded-lg font-bold text-sm">
-                    {item.year}
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-secondary-500 mb-2">
-                      {item.title}
-                    </h4>
-                    <p className="text-neutral-500 text-sm">
-                      {item.description}
-                    </p>
+            {/* Imagem do Fundador */}
+            <div className="flex justify-center">
+              <div className="relative">
+                {/* Background decorative square */}
+                <div className="w-80 h-80 bg-gradient-to-br from-primary-100 to-accent-100 rounded-2xl flex items-center justify-center shadow-lg">
+                  {/* Main content square */}
+                  <div className="w-72 h-72 bg-background-500 rounded-xl flex items-center justify-center border-4 border-white shadow-inner relative overflow-hidden">
+                    <img 
+                      src={fundadorImg} 
+                      alt="Fundador da Fortuna Contábil"
+                      className="w-full h-full object-cover rounded-lg"
+                    />
                   </div>
                 </div>
-              ))}
+                
+                {/* Legenda do Fundador */}
+                <div className="text-center mt-6">
+                  <h3 className="text-xl font-bold text-secondary-500 mb-2">Júnior - Fundador</h3>
+                  <p className="text-neutral-500 text-sm leading-relaxed">
+                    Contador especializado em<br />
+                    MEI e pequenas empresas
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Valores Detalhados */}
-      <section className="py-20">
+      <section className="py-20 bg-gradient-to-br from-white to-background-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4">
-              Nossos Valores em Prática
+            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4 relative">
+              <span className="relative z-10">Nossos Valores em Prática</span>
             </h2>
+            <SectionDivider />
             <p className="text-xl text-neutral-500 max-w-3xl mx-auto">
               Conheça os princípios que guiam nosso trabalho e nos diferenciam 
               no mercado de contabilidade.
@@ -174,16 +154,21 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {values.map((value, index) => (
-              <div key={index} className="bg-background-500 rounded-xl shadow-lg p-8 text-center">
-                <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <value.icon size={32} className="text-primary-500" />
+              <div key={index} className="group relative">
+                <div className="bg-white rounded-2xl shadow-lg p-8 text-center h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-gray-100">
+                  <div className="bg-gradient-to-br from-primary-100 to-accent-100 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-6 transition-transform duration-300">
+                    <value.icon size={40} className="text-primary-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-secondary-500 mb-4">
+                    {value.title}
+                  </h3>
+                  <p className="text-neutral-500 leading-relaxed">
+                    {value.description}
+                  </p>
+                  <div className="mt-6 flex justify-center">
+                    <div className="w-8 h-1 bg-gradient-to-r from-primary-400 to-accent-400 rounded-full"></div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-secondary-500 mb-4">
-                  {value.title}
-                </h3>
-                <p className="text-neutral-500 leading-relaxed">
-                  {value.description}
-                </p>
               </div>
             ))}
           </div>
@@ -191,154 +176,71 @@ const About = () => {
       </section>
 
       {/* Diferenciais */}
-      <section className="py-20 bg-background-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-gradient-to-br from-background-100 to-background-200 relative overflow-hidden">
+        
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4">
-              O que nos Diferencia
+            <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-4 relative">
+              <span className="relative z-10">O que nos Diferencia</span>
             </h2>
+            <SectionDivider />
             <p className="text-xl text-neutral-500 max-w-3xl mx-auto">
               Descubra por que a Fortuna Contábil é a escolha certa para 
               o seu negócio.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users size={32} className="text-primary-500" />
-              </div>
-              <h3 className="text-lg font-semibold text-secondary-500 mb-2">
-                Especialização em MEI
-              </h3>
-              <p className="text-neutral-500 text-sm">
-                Focamos em quem mais precisa de orientação: os pequenos empreendedores.
-              </p>
-            </div>
+          <div className="max-w-4xl mx-auto space-y-8">
+            {diferenciais.map((diferencial, index) => (
+              <div key={index} className={`group relative flex flex-col lg:flex-row items-center gap-8`}>
+                {/* Ícone e número */}
+                <div className="flex justify-center">
+                  <div className="relative">
+                    <div className={`w-24 h-24 bg-gradient-to-br from-${diferencial.color}-100 to-${diferencial.color}-200 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <diferencial.icon size={48} className={`text-${diferencial.color}-600`} />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-accent-500 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                      {index + 1}
+                    </div>
+                  </div>
+                </div>
 
-            <div className="text-center">
-              <div className="bg-accent-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Shield size={32} className="text-accent-500" />
+                {/* Conteúdo */}
+                <div className="w-full text-center lg:text-left">
+                  <div className="bg-white rounded-2xl shadow-lg p-8 transform transition-all duration-300 hover:shadow-xl border-l-4 border-accent-500">
+                    <h3 className="text-2xl font-bold text-secondary-500 mb-4 flex items-center justify-center lg:justify-start">
+                      {diferencial.title}
+                      <div className={`ml-3 w-2 h-2 bg-${diferencial.color}-500 rounded-full`}></div>
+                    </h3>
+                    <p className="text-neutral-500 leading-relaxed text-lg">
+                      {diferencial.description}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <h3 className="text-lg font-semibold text-secondary-500 mb-2">
-                100% Online
-              </h3>
-              <p className="text-neutral-500 text-sm">
-                Atendemos empreendedores em todo o Brasil com rapidez e eficiência.
-              </p>
-            </div>
+            ))}
+          </div>
 
-            <div className="text-center">
-              <div className="bg-primary-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock size={32} className="text-primary-500" />
-              </div>
-              <h3 className="text-lg font-semibold text-secondary-500 mb-2">
-                Atendimento Rápido
-              </h3>
-              <p className="text-neutral-500 text-sm">
-                Sem perder o contato humano, oferecemos agilidade quando você precisa.
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="bg-accent-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp size={32} className="text-accent-500" />
-              </div>
-              <h3 className="text-lg font-semibold text-secondary-500 mb-2">
-                Crescimento Organizado
-              </h3>
-              <p className="text-neutral-500 text-sm">
-                Ajudamos seu negócio a crescer de forma sustentável e organizada.
-              </p>
+          {/* Elemento decorativo central */}
+          <div className="mt-16 text-center">
+            <div className="inline-flex items-center space-x-4 bg-white rounded-full px-8 py-4 shadow-lg">
+              <span className="text-secondary-500 font-semibold">Cada diferencial é um compromisso com sua empresa</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Objetivos */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl lg:text-4xl font-bold text-secondary-500 mb-6">
-                Nossos Objetivos
-              </h2>
-              <p className="text-lg text-neutral-500 mb-8 leading-relaxed">
-                A curto e médio prazo, nosso objetivo é ampliar significativamente 
-                a base de clientes, mantendo o compromisso com a excelência, 
-                a transparência e a proximidade no relacionamento.
-              </p>
-              <p className="text-lg text-neutral-500 mb-8 leading-relaxed">
-                Esses são pilares essenciais para a construção de parcerias 
-                duradouras e para o sucesso dos nossos clientes.
-              </p>
-              <Link
-                to={ROUTES.CONTACT}
-                className="bg-accent-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-accent-600 transition-colors inline-flex items-center"
-              >
-                Fale Conosco
-                <CheckCircle size={20} className="ml-2" />
-              </Link>
-            </div>
-
-            <div className="bg-accent-500 text-white rounded-2xl p-8">
-              <h3 className="text-2xl font-bold mb-6">Próximos Passos</h3>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <CheckCircle size={24} className="text-primary-400" />
-                  <span>Ampliar base de clientes</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle size={24} className="text-primary-400" />
-                  <span>Manter excelência no atendimento</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle size={24} className="text-primary-400" />
-                  <span>Fortalecer transparência</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle size={24} className="text-primary-400" />
-                  <span>Construir parcerias duradouras</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <CheckCircle size={24} className="text-primary-400" />
-                  <span>Área do cliente online</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-secondary-500 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Pronto para fazer parte da nossa história?
-          </h2>
-          <p className="text-xl text-neutral-200 mb-8 leading-relaxed">
-            Entre em contato conosco e descubra como podemos ajudar seu negócio 
-            a crescer de forma organizada e sem complicações.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to={ROUTES.CONTACT}
-              className="bg-accent-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-600 transition-colors inline-flex items-center justify-center"
-            >
-              Solicitar Orçamento
-              <CheckCircle size={20} className="ml-2" />
-            </Link>
-            <a
-              href="https://wa.me/5531990726579"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-primary-500 text-secondary-500 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary-600 transition-colors inline-flex items-center justify-center"
-            >
-              WhatsApp
-            </a>
-          </div>
-        </div>
-      </section>
+             {/* CTA Section */}
+       <CTASection
+         title="Pronto para fazer parte da nossa história?"
+         description="Entre em contato conosco e descubra como podemos ajudar seu negócio a crescer de forma organizada e sem complicações."
+         primaryButtonText="Solicitar Orçamento"
+         primaryButtonLink="/contato"
+         secondaryButtonText="WhatsApp"
+         secondaryButtonLink="https://wa.me/5531990726579"
+         isExternalSecondary={true}
+       />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import aberturaEmpresaImg from '../assets/images/abertura_empresa.jpg';
 import contabilidadeMeiImg from '../assets/images/contabilidade_mei.jpg';
 import consultoriaContabilImg from '../assets/images/cnsultoria_contabil.jpg';
 import declaracaoImg from '../assets/images/declaracao.jpg';
+import CTASection from '../components/CTASection';
 
 const Home = () => {
      const services = [
@@ -456,42 +457,15 @@ const Home = () => {
        </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-accent-500 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-accent-600 to-accent-700"></div>
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-primary-500/10 to-transparent"></div>
-        
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium mb-6">
-            Comece Agora
-          </div>
-          
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Pronto para descomplicar sua contabilidade?
-          </h2>
-          <p className="text-xl text-accent-100 mb-8 leading-relaxed">
-            Entre em contato conosco e descubra como podemos ajudar seu negócio a crescer 
-            de forma organizada e sem complicações.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to={ROUTES.CONTACT}
-              className="bg-primary-500 text-secondary-500 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary-600 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center shadow-lg"
-            >
-              Solicitar Orçamento
-              <ArrowRight size={20} className="ml-2" />
-            </Link>
-            <a
-                             href="https://wa.me/5531990726579"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-accent-500 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
-            >
-              WhatsApp
-            </a>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        title="Pronto para descomplicar sua contabilidade?"
+        description="Entre em contato conosco e descubra como podemos ajudar seu negócio a crescer de forma organizada e sem complicações."
+        primaryButtonText="Solicitar Orçamento"
+        primaryButtonLink="/contato"
+        secondaryButtonText="WhatsApp"
+        secondaryButtonLink="https://wa.me/5531990726579"
+        isExternalSecondary={true}
+      />
     </div>
   );
 };
