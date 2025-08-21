@@ -6,7 +6,6 @@ interface CTASectionProps {
   title: string;
   description: string;
   primaryButtonText: string;
-  primaryButtonLink: string;
   secondaryButtonText: string;
   secondaryButtonLink: string;
   isExternalSecondary?: boolean;
@@ -18,7 +17,6 @@ const CTASection = ({
   title,
   description,
   primaryButtonText,
-  primaryButtonLink,
   secondaryButtonText,
   secondaryButtonLink,
   isExternalSecondary = true,
@@ -54,7 +52,7 @@ const CTASection = ({
         <div className="absolute bottom-0 right-0 w-24 h-24 bg-accent-400 rounded-full translate-x-12 translate-y-12"></div>
       </div>
 
-             <div className="flex justify-center mb-6">
+        <div className="flex justify-center mb-6">
          <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white text-sm font-medium">
            Comece Agora
          </div>
@@ -68,8 +66,8 @@ const CTASection = ({
           {description}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                     <Link
-             to={primaryButtonLink}
+            <Link
+             to={ROUTES.CONTACT}
              className={`px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 inline-flex items-center justify-center transform hover:scale-105 shadow-lg hover:shadow-xl ${getPrimaryButtonClass()}`}
            >
              {primaryButtonText}

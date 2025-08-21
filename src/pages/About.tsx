@@ -1,4 +1,4 @@
-import { Users, Shield, TrendingUp, Award, Clock, Star, Target, Heart } from 'lucide-react';
+import { Users, Shield, TrendingUp, Clock } from 'lucide-react';
 import sobreNosImg from '../assets/images/sobre_nos.jpg';
 import fundadorImg from '../assets/images/fundador.png';
 import SectionDivider from '../components/SectionDivider';
@@ -236,7 +236,6 @@ const About = () => {
          title="Pronto para fazer parte da nossa história?"
          description="Entre em contato conosco e descubra como podemos ajudar seu negócio a crescer de forma organizada e sem complicações."
          primaryButtonText="Solicitar Orçamento"
-         primaryButtonLink="/contato"
          secondaryButtonText="WhatsApp"
          secondaryButtonLink="https://wa.me/5531990726579"
          isExternalSecondary={true}

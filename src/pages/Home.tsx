@@ -461,7 +461,6 @@ const Home = () => {
         title="Pronto para descomplicar sua contabilidade?"
         description="Entre em contato conosco e descubra como podemos ajudar seu negócio a crescer de forma organizada e sem complicações."
         primaryButtonText="Solicitar Orçamento"
-        primaryButtonLink="/contato"
         secondaryButtonText="WhatsApp"
         secondaryButtonLink="https://wa.me/5531990726579"
         isExternalSecondary={true}
