@@ -46,14 +46,14 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Telefone',
-      content: '(31) 99999-9999',
-      link: 'tel:+5531999999999'
+      content: '(31) 99072-6579',
+              link: 'tel:+5531990726579'
     },
     {
       icon: Mail,
       title: 'E-mail',
-      content: 'contato@fortunacontabil.com.br',
-      link: 'mailto:contato@fortunacontabil.com.br'
+      content: 'fortunacontabill@gmail.com',
+      link: 'mailto:fortunacontabill@gmail.com'
     },
     {
       icon: MapPin,
@@ -176,7 +176,7 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="(31) 99999-9999"
+                      placeholder="(31) 99072-6579"
                     />
                   </div>
                   
@@ -302,7 +302,7 @@ const Contact = () => {
                   </div>
                 </div>
                 <a
-                  href="https://wa.me/5531999999999"
+                  href="https://wa.me/5531990726579"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors inline-flex items-center justify-center"

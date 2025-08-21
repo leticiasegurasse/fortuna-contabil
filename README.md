@@ -197,8 +197,8 @@ VITE_API_URL=https://api.fortunacontabil.com.br
 ## 📞 Contato
 
 **Fortuna Contábil**
-- **Telefone**: (31) 99999-9999
-- **E-mail**: contato@fortunacontabil.com.br
+- **Telefone**: (31) 99072-6579
+- **E-mail**: fortunacontabill@gmail.com
 - **Localização**: Belo Horizonte - MG
 - **Atendimento**: Todo o Brasil
 

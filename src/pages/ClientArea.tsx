@@ -317,7 +317,7 @@ const ClientArea = () => {
                 </p>
                 <div className="space-y-3">
                   <a
-                    href="https://wa.me/5531999999999"
+                    href="https://wa.me/5531990726579"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block bg-green-500 text-white py-2 px-4 rounded-lg text-center font-semibold hover:bg-green-600 transition-colors"

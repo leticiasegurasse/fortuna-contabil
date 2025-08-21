@@ -106,11 +106,11 @@ const Footer = () => {
             <div className="space-y-3 text-sm text-neutral-200">
               <div className="flex items-center space-x-2 justify-center md:justify-start">
                 <Phone size={16} className="text-primary-400" />
-                <span>(31) 99999-9999</span>
+                <span>(31) 99072-6579</span>
               </div>
               <div className="flex items-center space-x-2 justify-center md:justify-start">
                 <Mail size={16} className="text-primary-400" />
-                <span>contato@fortunacontabil.com.br</span>
+                <span>fortunacontabill@gmail.com</span>
               </div>
               <div className="flex items-start space-x-2 justify-center md:justify-start">
                 <MapPin size={16} className="text-primary-400 mt-1" />

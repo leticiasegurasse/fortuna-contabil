@@ -329,7 +329,7 @@ const About = () => {
               <CheckCircle size={20} className="ml-2" />
             </Link>
             <a
-              href="https://wa.me/5531999999999"
+              href="https://wa.me/5531990726579"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-primary-500 text-secondary-500 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-primary-600 transition-colors inline-flex items-center justify-center"

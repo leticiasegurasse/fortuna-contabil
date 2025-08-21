@@ -1,42 +1,46 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Star, Users, Shield, Building, BarChart3, Lightbulb, FileText, Award, Zap, MessageCircle, FileText as FileTextIcon, CheckCircle2, TrendingUp } from 'lucide-react';
 import { ROUTES } from '../config/routes';
+import aberturaEmpresaImg from '../assets/images/abertura_empresa.jpg';
+import contabilidadeMeiImg from '../assets/images/contabilidade_mei.jpg';
+import consultoriaContabilImg from '../assets/images/cnsultoria_contabil.jpg';
+import declaracaoImg from '../assets/images/declaracao.jpg';
 
 const Home = () => {
-  const services = [
-    {
-      id: '1',
-      title: 'Abertura de Empresas',
-      description: 'MEI, ME, EPP e outros tipos de CNPJ com agilidade e segurança.',
-      icon: Building,
-      features: ['Processo 100% online', 'Suporte especializado', 'Documentação completa'],
-      image: '/images/services/abertura-empresas.jpg'
-    },
-    {
-      id: '2',
-      title: 'Contabilidade MEI',
-      description: 'Gestão completa para Microempreendedores Individuais.',
-      icon: BarChart3,
-      features: ['Declaração anual', 'Orientação fiscal', 'Suporte contínuo'],
-      image: '/images/services/contabilidade-mei.jpg'
-    },
-    {
-      id: '3',
-      title: 'Consultoria Contábil',
-      description: 'Redução de custos e melhor organização para seu negócio.',
-      icon: Lightbulb,
-      features: ['Análise personalizada', 'Estratégias de economia', 'Planejamento fiscal'],
-      image: '/images/services/consultoria.jpg'
-    },
-    {
-      id: '4',
-      title: 'Declaração de IR',
-      description: 'Imposto de Renda Pessoa Física e Jurídica com tranquilidade.',
-      icon: FileText,
-      features: ['Declaração completa', 'Otimização fiscal', 'Suporte especializado'],
-      image: '/images/services/declaracao-ir.jpg'
-    }
-  ];
+     const services = [
+     {
+       id: '1',
+       title: 'Abertura de Empresas',
+       description: 'MEI, ME, EPP e outros tipos de CNPJ com agilidade e segurança.',
+       icon: Building,
+       features: ['Processo 100% online', 'Suporte especializado', 'Documentação completa'],
+       image: aberturaEmpresaImg
+     },
+     {
+       id: '2',
+       title: 'Contabilidade MEI',
+       description: 'Gestão completa para Microempreendedores Individuais.',
+       icon: BarChart3,
+       features: ['Declaração anual', 'Orientação fiscal', 'Suporte contínuo'],
+       image: contabilidadeMeiImg
+     },
+     {
+       id: '3',
+       title: 'Consultoria Contábil',
+       description: 'Redução de custos e melhor organização para seu negócio.',
+       icon: Lightbulb,
+       features: ['Análise personalizada', 'Estratégias de economia', 'Planejamento fiscal'],
+       image: consultoriaContabilImg
+     },
+     {
+       id: '4',
+       title: 'Declaração de IR',
+       description: 'Imposto de Renda Pessoa Física e Jurídica com tranquilidade.',
+       icon: FileText,
+       features: ['Declaração completa', 'Otimização fiscal', 'Suporte especializado'],
+       image: declaracaoImg
+     }
+   ];
 
   const testimonials = [
     {
@@ -126,13 +130,13 @@ const Home = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to={ROUTES.CONTACT}
-                  className="bg-accent-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-600 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center shadow-lg"
-                >
-                  Fale Conosco
-                  <ArrowRight size={20} className="ml-2" />
-                </Link>
+                                 <Link
+                   to={ROUTES.CONTACT}
+                   className="bg-accent-500 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-600 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center shadow-lg"
+                 >
+                   Fale com um Contador
+                   <ArrowRight size={20} className="ml-2" />
+                 </Link>
                 <Link
                   to={ROUTES.SERVICES}
                   className="border-2 border-accent-500 text-accent-500 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-accent-500 hover:text-white transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
@@ -257,17 +261,18 @@ const Home = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service) => (
               <div key={service.id} className="group bg-background-500 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 overflow-hidden">
-                {/* Service Image */}
-                <div className="h-48 bg-gradient-to-br from-primary-100 to-accent-100 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-accent-500/20"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <service.icon size={64} className="text-primary-500 group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  {/* Placeholder for actual image */}
-                  <div className="absolute inset-0 bg-neutral-200 flex items-center justify-center text-neutral-400 text-sm">
-                    Imagem: {service.title}
-                  </div>
-                </div>
+                                 {/* Service Image */}
+                 <div className="h-48 relative overflow-hidden">
+                   <img 
+                     src={service.image} 
+                     alt={service.title}
+                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                   />
+                   <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-accent-500/20"></div>
+                   <div className="absolute inset-0 flex items-center justify-center">
+                     <service.icon size={64} className="text-white drop-shadow-lg group-hover:scale-110 transition-transform duration-300" />
+                   </div>
+                 </div>
                 
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-secondary-500 mb-3 group-hover:text-primary-500 transition-colors">
@@ -316,15 +321,24 @@ const Home = () => {
               </h2>
               
               <p className="text-lg text-justify text-neutral-500 leading-relaxed">
-                Com 3 anos de experiência, somos especialistas em contabilidade para MEI e pequenas empresas. 
-                Nossa missão é descomplicar a gestão contábil, oferecendo soluções personalizadas e 
-                atendimento humanizado.
-              </p>
-              
-              <p className="text-lg text-justify text-neutral-500 leading-relaxed">
-                Atendemos empreendedores em todo o Brasil com rapidez e eficiência, sempre mantendo 
-                a proximidade e transparência que são nossos pilares fundamentais.
-              </p>
+                 A Fortuna Contábil nasceu para transformar a relação dos pequenos negócios com a contabilidade. 
+                 Somos uma equipe apaixonada por simplificar a burocracia e ajudar empreendedores, MEIs e 
+                 pequenas empresas a crescerem com segurança e organização.
+               </p>
+               
+               <p className="text-lg text-justify text-neutral-500 leading-relaxed">
+                 Com atendimento personalizado e linguagem clara, cuidamos da parte fiscal, tributária e 
+                 financeira para que você possa focar no que realmente importa: o sucesso do seu negócio.
+               </p>
+               
+               <p className="text-lg text-justify text-neutral-500 leading-relaxed">
+                 Aqui, sua empresa tem apoio completo para estar sempre em dia com o governo, pagar menos 
+                 impostos e tomar decisões estratégicas com confiança.
+               </p>
+               
+               <p className="text-lg text-justify text-neutral-500 leading-relaxed font-semibold">
+                 Fortuna Contábil — sua parceira para crescer com segurança.
+               </p>
               
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -468,7 +482,7 @@ const Home = () => {
               <ArrowRight size={20} className="ml-2" />
             </Link>
             <a
-              href="https://wa.me/5531999999999"
+                             href="https://wa.me/5531990726579"
               target="_blank"
               rel="noopener noreferrer"
               className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-accent-500 transition-all duration-300 hover:scale-105 inline-flex items-center justify-center"
