@@ -21,7 +21,7 @@ const Header = () => {
     { name: 'Home', href: ROUTES.HOME },
     { name: 'Sobre', href: ROUTES.ABOUT },
     { name: 'Serviços', href: ROUTES.SERVICES },
-    { name: 'Blog', href: ROUTES.BLOG },
+    //{ name: 'Blog', href: ROUTES.BLOG },
     { name: 'Contato', href: ROUTES.CONTACT },
   ];
 
@@ -61,12 +61,12 @@ const Header = () => {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-4">
-            <Link
+            {/*<Link
               to={ROUTES.CLIENT_AREA}
               className="text-sm font-medium text-secondary-500 hover:text-primary-500 transition-colors"
             >
               Área do Cliente
-            </Link>
+            </Link>*/}
             <Link
               to={ROUTES.CONTACT}
               className="bg-accent-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-accent-600 transition-colors"

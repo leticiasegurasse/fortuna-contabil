@@ -5,7 +5,6 @@ interface FAQItem {
   answer: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   iconColor: string;
-  gradientColors: string;
 }
 
 interface FAQProps {
@@ -39,7 +38,7 @@ const FAQ = ({ title, subtitle, items, className = "" }: FAQProps) => {
                   </h3>
                 </div>
                 <div className="ml-4 flex-shrink-0">
-                  <div className={`w-6 h-6 rounded-full ${item.gradientColors} flex items-center justify-center group-open:rotate-180 transition-transform duration-300`}>
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center group-open:rotate-180 transition-transform duration-300`}>
                     <ArrowRight size={16} className="text-primary-600" />
                   </div>
                 </div>

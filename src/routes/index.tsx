@@ -33,7 +33,7 @@ const AppRoutes = () => (
           <Route path={ROUTES.SERVICE_SMALL_BUSINESS} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
           
           <Route path={ROUTES.HOME} element={<DefaultLayout><Blog /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><Contact /></DefaultLayout>} />
+          <Route path={ROUTES.CONTACT} element={<DefaultLayout><Contact /></DefaultLayout>} />
           <Route path={ROUTES.HOME} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
           
           {/* Rota 404 - Sem layout para ter design próprio */}
