@@ -22,15 +22,15 @@ const AppRoutes = () => (
           {/* Rotas com layout padrão */}
           <Route path={ROUTES.HOME} element={<DefaultLayout><Home /></DefaultLayout>} />
           <Route path={ROUTES.ABOUT} element={<DefaultLayout><About /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><Services /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICES} element={<DefaultLayout><Services /></DefaultLayout>} />
           
           {/* Rotas de serviços individuais */}
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceOpening /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceMEI /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceConsulting /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceIR /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceRegularization /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICE_OPENING} element={<DefaultLayout><ServiceOpening /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICE_MEI} element={<DefaultLayout><ServiceMEI /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICE_CONSULTING} element={<DefaultLayout><ServiceConsulting /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICE_IR} element={<DefaultLayout><ServiceIR /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICE_REGULARIZATION} element={<DefaultLayout><ServiceRegularization /></DefaultLayout>} />
+          <Route path={ROUTES.SERVICE_SMALL_BUSINESS} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
           
           <Route path={ROUTES.HOME} element={<DefaultLayout><Blog /></DefaultLayout>} />
           <Route path={ROUTES.HOME} element={<DefaultLayout><Contact /></DefaultLayout>} />

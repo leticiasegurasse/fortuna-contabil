@@ -1,436 +1,189 @@
-import { Link } from 'react-router-dom';
 import { 
-  ArrowRight, 
-  CheckCircle, 
   Users, 
   Clock, 
   Shield, 
   FileText, 
   Calculator, 
   TrendingUp,
-  MessageCircle,
   Calendar,
-  BarChart3
+  UserCheck,
+  BarChart3,
+  Target
 } from 'lucide-react';
-import { ROUTES } from '../../config/routes';
+import CTASection from '../../components/CTASection';
+import FAQ from '../../components/FAQ';
+import ServiceHero from '../../components/ServiceHero';
+import BenefitsSection from '../../components/BenefitsSection';
+import ServicesSection from '../../components/ServicesSection';
+import ProcessSteps from '../../components/ProcessSteps';
 
 const ServiceSmallBusiness = () => {
   const services = [
     {
-      title: 'Escrituração Contábil',
-      description: 'Escrituração completa e organizada',
-      icon: FileText
+      title: 'Contabilidade Completa',
+      description: 'Gestão contábil integral para ME e EPP',
+      features: ['Escrituração contábil', 'Relatórios mensais', 'Controle financeiro']
     },
     {
-      title: 'Apuração de Impostos',
-      description: 'Cálculo e apuração de todos os impostos',
-      icon: Calculator
+      title: 'Gestão Fiscal',
+      description: 'Acompanhamento de todas as obrigações fiscais',
+      features: ['Cálculo de impostos', 'Emissão de guias', 'Controle de prazos']
     },
     {
-      title: 'Relatórios Gerenciais',
-      description: 'Relatórios para tomada de decisão',
-      icon: BarChart3
+      title: 'Planejamento Tributário',
+      description: 'Estratégias para otimização fiscal',
+      features: ['Análise de enquadramento', 'Redução de custos', 'Compliance fiscal']
     },
     {
-      title: 'Suporte Fiscal',
-      description: 'Orientação fiscal personalizada',
-      icon: Shield
-    },
-    {
-      title: 'Declarações Obrigatórias',
-      description: 'Todas as declarações no prazo',
-      icon: Calendar
-    },
-    {
-      title: 'Orientação Empresarial',
-      description: 'Consultoria para crescimento',
-      icon: TrendingUp
+      title: 'Suporte Empresarial',
+      description: 'Orientação para crescimento organizado',
+      features: ['Consultoria contábil', 'Análise de viabilidade', 'Suporte estratégico']
     }
   ];
 
   const benefits = [
     {
       icon: Shield,
-      title: 'Segurança',
-      description: 'Tudo dentro da legislação'
+      title: 'Segurança Total',
+      description: 'Trabalho realizado com total transparência'
     },
     {
       icon: Clock,
       title: 'Agilidade',
-      description: 'Processos otimizados'
+      description: 'Processos otimizados para máxima eficiência'
     },
     {
       icon: Users,
-      title: 'Suporte',
-      description: 'Atendimento personalizado'
+      title: 'Suporte Personalizado',
+      description: 'Atendimento humanizado e direto'
     },
     {
       icon: TrendingUp,
-      title: 'Crescimento',
-      description: 'Foco no seu negócio'
+      title: 'Crescimento Garantido',
+      description: 'Base sólida para seu negócio crescer'
     }
   ];
 
-  const obligations = [
-    'Escrituração contábil mensal',
-    'Apuração de impostos',
-    'Declarações obrigatórias',
-    'Relatórios gerenciais',
-    'Suporte fiscal',
-    'Orientação empresarial'
-  ];
-
-  const plans = [
+  const process = [
     {
-      title: 'Plano Básico',
-      price: 'R$ 199/mês',
-      features: [
-        'Escrituração contábil',
-        'Apuração de impostos',
-        'Declarações obrigatórias',
-        'Suporte básico'
-      ],
-      popular: false
+      step: '01',
+      title: 'Análise Inicial',
+      description: 'Diagnóstico da situação atual da empresa',
+      icon: FileText
     },
     {
-      title: 'Plano Completo',
-      price: 'R$ 299/mês',
-      features: [
-        'Tudo do plano básico',
-        'Relatórios gerenciais',
-        'Suporte prioritário',
-        'Orientação empresarial',
-        'Consultoria fiscal',
-        'Acompanhamento mensal'
-      ],
-      popular: true
+      step: '02',
+      title: 'Planejamento',
+      description: 'Estratégia personalizada para seu negócio',
+      icon: TrendingUp
+    },
+    {
+      step: '03',
+      title: 'Implementação',
+      description: 'Execução dos serviços contábeis',
+      icon: Calculator
+    },
+    {
+      step: '04',
+      title: 'Acompanhamento',
+      description: 'Monitoramento contínuo dos resultados',
+      icon: Clock
+    }
+  ];
+
+  const faqItems = [
+    {
+      question: 'Qual a diferença entre ME e EPP?',
+      answer: 'ME (Microempresa) tem faturamento até R$ 360.000/ano, enquanto EPP (Empresa de Pequeno Porte) tem faturamento até R$ 4.800.000/ano. Ambas podem optar pelo Simples Nacional, mas com alíquotas diferentes.',
+      icon: Target,
+      iconColor: 'text-primary-500',
+      gradientColors: 'bg-gradient-to-r from-primary-500 to-primary-600'
+    },
+    {
+      question: 'O que está incluído na contabilidade completa?',
+      answer: 'Incluímos escrituração contábil, relatórios mensais, gestão fiscal, planejamento tributário, emissão de guias, controle de prazos e suporte empresarial personalizado.',
+      icon: BarChart3,
+      iconColor: 'text-accent-500',
+      gradientColors: 'bg-gradient-to-r from-accent-500 to-accent-600'
+    },
+    {
+      question: 'Como funciona o Simples Nacional?',
+      answer: 'O Simples Nacional é um regime tributário que unifica 8 impostos em uma única guia mensal. As alíquotas variam conforme o faturamento e a atividade da empresa.',
+      icon: Calculator,
+      iconColor: 'text-primary-500',
+      gradientColors: 'bg-gradient-to-r from-primary-500 to-primary-600'
+    },
+    {
+      question: 'Posso ter funcionários sendo ME ou EPP?',
+      answer: 'Sim! ME pode ter até 9 funcionários e EPP pode ter até 99 funcionários. Ambas precisam cumprir obrigações trabalhistas e previdenciárias.',
+      icon: UserCheck,
+      iconColor: 'text-accent-500',
+      gradientColors: 'bg-gradient-to-r from-accent-500 to-accent-600'
+    },
+    {
+      question: 'Quais são as obrigações mensais?',
+      answer: 'As principais obrigações incluem: DAS (Simples Nacional), DARF (IR e CSLL), DCTF, SPED, e relatórios contábeis. Nós cuidamos de todas essas obrigações para você.',
+      icon: Calendar,
+      iconColor: 'text-primary-500',
+      gradientColors: 'bg-gradient-to-r from-primary-500 to-primary-600'
     }
   ];
 
   return (
     <div className="overflow-x-hidden">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="flex items-center space-x-2 text-blue-200">
-                <Link to={ROUTES.SERVICES} className="hover:text-white transition-colors">
-                  Serviços
-                </Link>
-                <span>/</span>
-                <span>Contabilidade para Pequenas Empresas</span>
-              </div>
-              <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
-                Contabilidade para{' '}
-                <span className="text-yellow-400">Pequenas Empresas</span>
-              </h1>
-              <p className="text-xl text-blue-100 leading-relaxed">
-                Serviços contábeis completos para Microempresas e Empresas de Pequeno Porte. 
-                Escrituração, relatórios gerenciais e suporte fiscal para seu negócio crescer 
-                de forma organizada e segura.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  to={ROUTES.CONTACT}
-                  className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors inline-flex items-center justify-center"
-                >
-                  Solicitar Orçamento
-                  <ArrowRight size={20} className="ml-2" />
-                </Link>
-                <a
-                  href="https://wa.me/5531990726579"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center"
-                >
-                  <MessageCircle size={20} className="mr-2" />
-                  WhatsApp
-                </a>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <h3 className="text-2xl font-bold mb-6">Por que escolher a Fortuna?</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle size={24} className="text-yellow-400" />
-                    <span>Especialistas em ME e EPP</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle size={24} className="text-yellow-400" />
-                    <span>Relatórios gerenciais</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle size={24} className="text-yellow-400" />
-                    <span>Suporte personalizado</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle size={24} className="text-yellow-400" />
-                    <span>Preços justos</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ServiceHero
+        breadcrumb="Contabilidade para Pequenas Empresas"
+        title="Contabilidade para"
+        titleHighlight="Pequenas Empresas"
+        description="Serviços contábeis completos para Microempresas e Empresas de Pequeno Porte. Gestão integral com foco no crescimento organizado e sustentável."
+        primaryButtonText="Solicitar Orçamento"
+        features={[
+          "Especialização em ME e EPP",
+          "Contabilidade completa",
+          "Suporte personalizado",
+          "Crescimento organizado"
+        ]}
+      />
 
       {/* Benefits Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Vantagens do Nosso Serviço
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Contabilidade completa para seu negócio crescer
-            </p>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
-              <div key={index} className="text-center">
-                <div className="flex justify-center mb-4">
-                  <benefit.icon size={48} className="text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {benefit.title}
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  {benefit.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <BenefitsSection
+        title="Vantagens do Nosso Serviço"
+        subtitle="Benefícios que fazem a diferença para pequenas empresas"
+        benefits={benefits}
+      />
 
-      {/* Services Included */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Nossos Serviços
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Soluções completas para pequenas empresas
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <service.icon size={32} className="text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm">
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Process Section */}
+      <ProcessSteps
+        title="Como Funciona Nosso Trabalho"
+        subtitle="Processo estruturado para resultados efetivos"
+        steps={process}
+      />
 
-      {/* Plans Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Nossos Planos
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Escolha o plano ideal para sua empresa
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {plans.map((plan, index) => (
-              <div 
-                key={index} 
-                className={`bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow ${
-                  plan.popular ? 'ring-2 ring-blue-500 relative' : ''
-                }`}
-              >
-                {plan.popular && (
-                  <div className="bg-blue-500 text-white text-sm font-semibold px-3 py-1 rounded-full inline-block mb-4">
-                    Mais Popular
-                  </div>
-                )}
-                
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {plan.title}
-                  </h3>
-                  <div className="text-4xl font-bold text-gray-900 mb-4">
-                    {plan.price}
-                  </div>
-                </div>
-                
-                <ul className="space-y-4 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-gray-600">
-                      <CheckCircle size={20} className="text-green-500 mr-3 flex-shrink-0" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  to={ROUTES.CONTACT}
-                  className={`w-full py-3 px-6 rounded-lg font-semibold transition-colors inline-flex items-center justify-center ${
-                    plan.popular 
-                      ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                  }`}
-                >
-                  Escolher Plano
-                  <ArrowRight size={20} className="ml-2" />
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Obligations Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Obrigações das Pequenas Empresas
-            </h2>
-            <p className="text-xl text-gray-600">
-              Nós cuidamos de tudo isso para você
-            </p>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {obligations.map((obligation, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <CheckCircle size={20} className="text-green-500 flex-shrink-0" />
-                  <span className="text-gray-700">{obligation}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-8 p-4 bg-blue-50 rounded-lg">
-              <p className="text-blue-800 text-sm">
-                <strong>Importante:</strong> ME e EPP têm obrigações mensais e anuais. 
-                Nós garantimos que tudo seja feito no prazo e corretamente.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Services Section */}
+      <ServicesSection
+        title="Nossos Serviços para Pequenas Empresas"
+        subtitle="Soluções especializadas para ME e EPP"
+        services={services}
+        backgroundColor="background"
+      />
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Perguntas Frequentes
-            </h2>
-            <p className="text-xl text-gray-600">
-              Tire suas dúvidas sobre contabilidade para pequenas empresas
-            </p>
-          </div>
-
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Qual a diferença entre ME e EPP?
-              </h3>
-              <p className="text-gray-600">
-                ME é para faturamento até R$ 360.000/ano, EPP é para faturamento 
-                até R$ 4.800.000/ano. Ambos podem optar pelo Simples Nacional 
-                e têm obrigações similares.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Quais são as obrigações mensais?
-              </h3>
-              <p className="text-gray-600">
-                Escrituração contábil, apuração de impostos, emissão de guias, 
-                declarações obrigatórias e relatórios gerenciais. 
-                Nós cuidamos de tudo isso.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Posso migrar de MEI para ME?
-              </h3>
-              <p className="text-gray-600">
-                Sim! Se você ultrapassar o limite do MEI (R$ 81.000/ano), 
-                pode migrar para ME. Nós ajudamos nesse processo.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                O que são relatórios gerenciais?
-              </h3>
-              <p className="text-gray-600">
-                Relatórios que mostram a saúde financeira da empresa, 
-                fluxo de caixa, lucratividade e outros indicadores 
-                importantes para tomada de decisão.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Como funciona o suporte?
-              </h3>
-              <p className="text-gray-600">
-                Oferecemos suporte via WhatsApp, telefone e e-mail. 
-                Para clientes do plano completo, o suporte é prioritário 
-                e inclui orientação empresarial.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <FAQ
+        title="Perguntas Frequentes"
+        subtitle="Tire suas dúvidas sobre contabilidade para pequenas empresas"
+        items={faqItems}
+      />
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-            Pronto para ter uma contabilidade completa?
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-            Entre em contato conosco e descubra como podemos ajudar sua pequena empresa 
-            a crescer de forma organizada e segura.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to={ROUTES.CONTACT}
-              className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-300 transition-colors inline-flex items-center justify-center"
-            >
-              Solicitar Orçamento
-              <ArrowRight size={20} className="ml-2" />
-            </Link>
-            <a
-              href="https://wa.me/5531990726579"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center"
-            >
-              <MessageCircle size={20} className="mr-2" />
-              WhatsApp
-            </a>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        title="Pronto para organizar sua contabilidade?"
+        description="Entre em contato conosco e descubra como podemos ajudar sua pequena empresa a crescer de forma organizada e sustentável."
+        primaryButtonText="Solicitar Orçamento"
+        secondaryButtonText="WhatsApp"
+        secondaryButtonLink="https://wa.me/5531990726579"
+        isExternalSecondary={true}
+      />
     </div>
   );
 };
