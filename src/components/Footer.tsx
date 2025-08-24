@@ -77,25 +77,25 @@ const Footer = () => {
                   Sobre Nós
                 </Link>
               </li>
-              <li>
+              {/*<li>
                 <Link to={ROUTES.BLOG} className="hover:text-white transition-colors">
                   Blog
                 </Link>
-              </li>
+              </li>*/}
               <li>
                 <Link to={ROUTES.CONTACT} className="hover:text-white transition-colors">
                   Contato
                 </Link>
               </li>
-              <li>
+              {/*<li>
                 <Link to={ROUTES.CLIENT_AREA} className="hover:text-white transition-colors">
                   Área do Cliente
                 </Link>
-              </li>
+              </li>*/}
               <li>
-                <a href="#" className="hover:text-white transition-colors">
+                <Link to={ROUTES.PRIVACY_POLICY} className="hover:text-white transition-colors">
                   Política de Privacidade
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

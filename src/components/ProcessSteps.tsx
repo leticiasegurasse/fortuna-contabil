@@ -46,11 +46,6 @@ const ProcessSteps = ({
               <div className="bg-gradient-to-br from-accent-500 to-accent-600 text-white w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 text-xl font-bold group-hover:scale-110 transition-transform duration-300">
                 {step.step}
               </div>
-              <div className="flex justify-center mb-6">
-                <div className="bg-gradient-to-br from-primary-100 to-accent-100 p-4 rounded-2xl">
-                  <step.icon size={32} className="text-primary-600" />
-                </div>
-              </div>
               <h3 className="text-xl font-bold text-secondary-500 mb-3">
                 {step.title}
               </h3>

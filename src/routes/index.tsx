@@ -14,6 +14,7 @@ import ServiceSmallBusiness from '../pages/services/ServiceSmallBusiness';
 import Blog from '../pages/Blog';
 import Contact from '../pages/Contact';
 import ClientArea from '../pages/ClientArea';
+import PrivacyPolicy from '../pages/PrivacyPolicy';
 import NotFound from '../pages/NotFound';
 
 const AppRoutes = () => (
@@ -32,9 +33,10 @@ const AppRoutes = () => (
           <Route path={ROUTES.SERVICE_REGULARIZATION} element={<DefaultLayout><ServiceRegularization /></DefaultLayout>} />
           <Route path={ROUTES.SERVICE_SMALL_BUSINESS} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
           
-          <Route path={ROUTES.HOME} element={<DefaultLayout><Blog /></DefaultLayout>} />
+          <Route path={ROUTES.BLOG} element={<DefaultLayout><Blog /></DefaultLayout>} />
           <Route path={ROUTES.CONTACT} element={<DefaultLayout><Contact /></DefaultLayout>} />
-          <Route path={ROUTES.HOME} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
+          <Route path={ROUTES.CLIENT_AREA} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
+          <Route path={ROUTES.PRIVACY_POLICY} element={<DefaultLayout><PrivacyPolicy /></DefaultLayout>} />
           
           {/* Rota 404 - Sem layout para ter design próprio */}
           <Route path="*" element={<NotFound />} />

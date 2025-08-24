@@ -10,5 +10,6 @@ export const ROUTES = {
   SERVICE_SMALL_BUSINESS: '/servicos/contabilidade-pequenas-empresas',
   BLOG: '/blog',
   CONTACT: '/contato',
-  CLIENT_AREA: '/area-cliente'
+  CLIENT_AREA: '/area-cliente',
+  PRIVACY_POLICY: '/politica-privacidade'
 }; 
