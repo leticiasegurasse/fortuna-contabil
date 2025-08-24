@@ -23,7 +23,7 @@ const ServiceHero = ({
   features
 }: ServiceHeroProps) => {
   return (
-    <section className="relative py-20 md:h-[80vh] text-white flex items-center justify-center">
+    <section className="relative py-20 h-[80vh] text-white flex items-center justify-center">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"

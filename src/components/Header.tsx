@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home, Users, Briefcase, MessageCircle, User, Phone } from 'lucide-react';
 import { ROUTES } from '../config/routes';
 
 const Header = () => {
@@ -18,11 +18,10 @@ const Header = () => {
   }, []);
 
   const navigation = [
-    { name: 'Home', href: ROUTES.HOME },
-    { name: 'Sobre', href: ROUTES.ABOUT },
-    { name: 'Serviços', href: ROUTES.SERVICES },
-    //{ name: 'Blog', href: ROUTES.BLOG },
-    { name: 'Contato', href: ROUTES.CONTACT },
+    { name: 'Home', href: ROUTES.HOME, icon: Home },
+    { name: 'Sobre', href: ROUTES.ABOUT, icon: Users },
+    { name: 'Serviços', href: ROUTES.SERVICES, icon: Briefcase },
+    { name: 'Contato', href: ROUTES.CONTACT, icon: MessageCircle },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -78,7 +77,7 @@ const Header = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 rounded-md text-secondary-500 hover:text-primary-500 hover:bg-background-200"
+            className="lg:hidden p-3 rounded-xl text-secondary-500 hover:text-primary-500 hover:bg-primary-50 transition-all duration-300"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -86,37 +85,66 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background-500 border-t border-neutral-200">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActive(item.href)
-                      ? 'text-primary-500 bg-primary-50'
-                      : 'text-secondary-500 hover:text-primary-500 hover:bg-background-200'
-                  }`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="pt-4 space-y-2">
+          <div className="lg:hidden animate-in slide-in-from-top-2 duration-300">
+            <div className="px-4 pt-4 pb-6 space-y-3 bg-gradient-to-b from-background-500 to-background-400 border-t border-neutral-200 shadow-lg">
+              {/* Navigation Items */}
+              <div className="space-y-2">
+                {navigation.map((item, index) => (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 transform hover:scale-105 ${
+                      isActive(item.href)
+                        ? 'text-primary-500 bg-gradient-to-r from-primary-50 to-accent-50 border border-primary-200 shadow-sm'
+                        : 'text-secondary-500 hover:text-primary-500 hover:bg-background-200'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <item.icon size={20} className="flex-shrink-0" />
+                    <span>{item.name}</span>
+                  </Link>
+                ))}
+              </div>
+              
+              {/* Divider */}
+              <div className="border-t border-neutral-200 my-4"></div>
+              
+              {/* Additional Links */}
+              <div className="space-y-2">
                 <Link
                   to={ROUTES.CLIENT_AREA}
-                  className="block px-3 py-2 text-base font-medium text-secondary-500 hover:text-primary-500"
+                  className="flex items-center space-x-3 px-4 py-3 text-base font-medium text-secondary-500 hover:text-primary-500 hover:bg-background-200 rounded-xl transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Área do Cliente
+                  <User size={20} className="flex-shrink-0" />
+                  <span>Área do Cliente</span>
                 </Link>
+              </div>
+              
+              {/* CTA Button */}
+              <div className="pt-4">
                 <Link
                   to={ROUTES.CONTACT}
-                  className="block mx-3 bg-accent-500 text-white px-4 py-2 rounded-lg text-base font-medium text-center hover:bg-accent-600"
+                  className="flex items-center justify-center space-x-2 w-full bg-gradient-to-r from-accent-500 to-accent-600 text-white px-6 py-4 rounded-xl text-base font-semibold text-center hover:from-accent-600 hover:to-accent-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Fale Conosco
+                  <Phone size={20} />
+                  <span>Fale com um Contador</span>
                 </Link>
+              </div>
+              
+              {/* Contact Info */}
+              <div className="pt-4 px-4 py-3 bg-primary-50 rounded-xl border border-primary-200">
+                <div className="text-sm text-secondary-500 space-y-1">
+                  <div className="flex items-center space-x-2">
+                    <Phone size={16} className="text-primary-500" />
+                    <span>(31) 99072-6579</span>
+                  </div>
+                  <div className="text-xs text-neutral-500">
+                    Atendimento: Segunda a Sexta, 8h às 18h
+                  </div>
+                </div>
               </div>
             </div>
           </div>
