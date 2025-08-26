@@ -9,7 +9,6 @@ import {
   Calendar, 
   User, 
   Tag,
-  Filter,
   MoreVertical,
   FileText
 } from 'lucide-react';
@@ -33,14 +32,7 @@ const BlogManagement = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedPosts, setSelectedPosts] = useState<number[]>([]);
 
-  // Categorias mockadas (em um projeto real, viriam do backend)
-  const categories = [
-    'Abertura de Empresas',
-    'Imposto de Renda', 
-    'Consultoria',
-    'Legislação',
-    'Dicas'
-  ];
+
 
   // Dados mockados para demonstração
   const blogPosts: BlogPost[] = [

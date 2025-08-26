@@ -14,7 +14,7 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
-  const { login, isAuthenticated } = useAdminAuth();
+  const { login } = useAdminAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

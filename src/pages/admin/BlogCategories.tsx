@@ -8,7 +8,6 @@ import {
   Tag,
   MoreVertical,
   X,
-  Check,
   AlertCircle,
   ArrowLeft
 } from 'lucide-react';
@@ -91,13 +90,7 @@ const BlogCategories = () => {
     );
   };
 
-  const handleSelectAll = () => {
-    if (selectedCategories.length === filteredCategories.length) {
-      setSelectedCategories([]);
-    } else {
-      setSelectedCategories(filteredCategories.map(category => category.id));
-    }
-  };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
