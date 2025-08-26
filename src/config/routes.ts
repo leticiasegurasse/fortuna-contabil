@@ -11,5 +11,11 @@ export const ROUTES = {
   BLOG: '/blog',
   CONTACT: '/contato',
   CLIENT_AREA: '/area-cliente',
-  PRIVACY_POLICY: '/politica-privacidade'
+  PRIVACY_POLICY: '/politica-privacidade',
+  // Rotas do painel administrativo
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_DASHBOARD: '/admin/dashboard',
+  ADMIN_BLOG: '/admin/blog',
+  ADMIN_BLOG_NEW: '/admin/blog/novo',
+  ADMIN_BLOG_CATEGORIES: '/admin/blog/categorias'
 }; 

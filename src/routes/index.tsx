@@ -16,6 +16,14 @@ import Contact from '../pages/Contact';
 import ClientArea from '../pages/ClientArea';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
 import NotFound from '../pages/NotFound';
+// Importações do painel administrativo
+import AdminLogin from '../pages/admin/Login';
+import AdminDashboard from '../pages/admin/Dashboard';
+import AdminProtectedRoute from '../components/AdminProtectedRoute';
+import AdminLayout from '../layouts/AdminLayout';
+import BlogManagement from '../pages/admin/BlogManagement';
+import NewBlogPost from '../pages/admin/NewBlogPost';
+import BlogCategories from '../pages/admin/BlogCategories';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -37,6 +45,54 @@ const AppRoutes = () => (
           <Route path={ROUTES.CONTACT} element={<DefaultLayout><Contact /></DefaultLayout>} />
           <Route path={ROUTES.CLIENT_AREA} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
           <Route path={ROUTES.PRIVACY_POLICY} element={<DefaultLayout><PrivacyPolicy /></DefaultLayout>} />
+          
+          {/* Rotas do painel administrativo - Sem layout padrão */}
+          <Route path={ROUTES.ADMIN_LOGIN} element={<AdminLogin />} />
+          
+          {/* Rotas do painel administrativo - Com layout AdminLayout */}
+          <Route 
+            path={ROUTES.ADMIN_DASHBOARD} 
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout>
+                  <AdminDashboard />
+                </AdminLayout>
+              </AdminProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path={ROUTES.ADMIN_BLOG} 
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout>
+                  <BlogManagement />
+                </AdminLayout>
+              </AdminProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path={ROUTES.ADMIN_BLOG_NEW} 
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout>
+                  <NewBlogPost />
+                </AdminLayout>
+              </AdminProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path={ROUTES.ADMIN_BLOG_CATEGORIES} 
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout>
+                  <BlogCategories />
+                </AdminLayout>
+              </AdminProtectedRoute>
+            } 
+          />
           
           {/* Rota 404 - Sem layout para ter design próprio */}
           <Route path="*" element={<NotFound />} />

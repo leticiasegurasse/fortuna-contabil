@@ -30,6 +30,9 @@ const Footer = () => {
               <a href="#" className="text-neutral-300 hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
+              <a href="#" className="text-neutral-300 hover:text-white transition-colors">
+                <Linkedin size={20} />
+              </a>
             </div>
           </div>
 
