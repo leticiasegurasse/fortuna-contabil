@@ -14,7 +14,6 @@ import FAQ from '../../components/FAQ';
 import ServiceHero from '../../components/ServiceHero';
 import BenefitsSection from '../../components/BenefitsSection';
 import ServicesSection from '../../components/ServicesSection';
-import DocumentsRequired from '../../components/DocumentsRequired';
 
 const ServiceIR = () => {
   const services = [
@@ -63,14 +62,7 @@ const ServiceIR = () => {
     }
   ];
 
-  const documents = [
-    'Documentos pessoais (RG, CPF)',
-    'Comprovantes de rendimentos',
-    'Extratos bancários',
-    'Informes de rendimentos',
-    'Comprovantes de despesas',
-    'Documentos de bens e direitos'
-  ];
+
 
   const faqItems = [
     {
@@ -142,13 +134,6 @@ const ServiceIR = () => {
         buttonText="Solicitar Declaração"
       />
 
-      {/* Documents Required */}
-      <DocumentsRequired
-        subtitle="Documentação necessária para a declaração"
-        documents={documents}
-        importantNote="Todos os documentos podem ser enviados digitalmente. O processo é 100% online para sua comodidade."
-        backgroundColor="background"
-      />
 
       {/* FAQ Section */}
       <FAQ

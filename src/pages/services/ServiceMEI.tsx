@@ -14,7 +14,6 @@ import FAQ from '../../components/FAQ';
 import ServiceHero from '../../components/ServiceHero';
 import BenefitsSection from '../../components/BenefitsSection';
 import ServicesSection from '../../components/ServicesSection';
-import DocumentsRequired from '../../components/DocumentsRequired';
 
 const ServiceMEI = () => {
   const services = [
@@ -63,14 +62,7 @@ const ServiceMEI = () => {
     }
   ];
 
-  const documents = [
-    'CNPJ ativo',
-    'Comprovante de faturamento',
-    'Documentos pessoais',
-    'Informações bancárias',
-    'Dados da atividade',
-    'Histórico de vendas'
-  ];
+
 
   const faqItems = [
     {
@@ -141,13 +133,6 @@ const ServiceMEI = () => {
         services={services}
       />
 
-      {/* Documents Required */}
-      <DocumentsRequired
-        subtitle="Documentação simples para começar"
-        documents={documents}
-        importantNote="Todos os documentos podem ser enviados digitalmente. O processo é 100% online para sua comodidade."
-        backgroundColor="background"
-      />
 
       {/* FAQ Section */}
       <FAQ

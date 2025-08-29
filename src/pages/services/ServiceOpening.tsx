@@ -17,7 +17,6 @@ import ServiceHero from '../../components/ServiceHero';
 import BenefitsSection from '../../components/BenefitsSection';
 import ServicesSection from '../../components/ServicesSection';
 import ProcessSteps from '../../components/ProcessSteps';
-import DocumentsRequired from '../../components/DocumentsRequired';
 
 const ServiceOpening = () => {
   const steps = [
@@ -99,14 +98,7 @@ const ServiceOpening = () => {
     }
   ];
 
-  const documents = [
-    'RG e CPF do responsável',
-    'Comprovante de residência',
-    'Foto 3x4 (recente)',
-    'Nome da empresa (3 opções)',
-    'Atividade principal',
-    'Endereço comercial'
-  ];
+
 
   const faqItems = [
     {
@@ -187,12 +179,6 @@ const ServiceOpening = () => {
         backgroundColor="background"
       />
 
-      {/* Documents Required */}
-      <DocumentsRequired
-        subtitle="Documentação simples e rápida"
-        documents={documents}
-        importantNote="Todos os documentos podem ser enviados digitalmente. Não é necessário se deslocar até nosso escritório."
-      />
 
       {/* FAQ Section */}
       <FAQ
