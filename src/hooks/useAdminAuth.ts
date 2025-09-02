@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { API_URL, API_ENDPOINTS } from '../config/api';
+import { API_CONFIG } from '../config';
 
 interface AdminUser {
   id: number;
@@ -34,7 +34,7 @@ export const useAdminAuth = (): UseAdminAuthReturn => {
 
       if (storedToken && storedUser) {
         // Verificar se o token ainda é válido
-        const response = await fetch(`${API_URL}${API_ENDPOINTS.AUTH.VERIFY_TOKEN}`, {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/verify-token`, {
           headers: {
             'Authorization': `Bearer ${storedToken}`,
             'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ export const useAdminAuth = (): UseAdminAuthReturn => {
 
   const login = async (username: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      const response = await fetch(`${API_URL}${API_ENDPOINTS.AUTH.LOGIN}`, {
+      const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.AUTH.LOGIN}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

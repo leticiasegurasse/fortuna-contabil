@@ -12,6 +12,7 @@ import ServiceIR from '../pages/services/ServiceIR';
 import ServiceRegularization from '../pages/services/ServiceRegularization';
 import ServiceSmallBusiness from '../pages/services/ServiceSmallBusiness';
 import Blog from '../pages/Blog';
+import BlogPost from '../pages/BlogPost';
 import Contact from '../pages/Contact';
 import ClientArea from '../pages/ClientArea';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
@@ -42,6 +43,7 @@ const AppRoutes = () => (
           <Route path={ROUTES.SERVICE_SMALL_BUSINESS} element={<DefaultLayout><ServiceSmallBusiness /></DefaultLayout>} />
           
           <Route path={ROUTES.BLOG} element={<DefaultLayout><Blog /></DefaultLayout>} />
+          <Route path={ROUTES.BLOG_POST} element={<DefaultLayout><BlogPost /></DefaultLayout>} />
           <Route path={ROUTES.CONTACT} element={<DefaultLayout><Contact /></DefaultLayout>} />
           <Route path={ROUTES.CLIENT_AREA} element={<DefaultLayout><ClientArea /></DefaultLayout>} />
           <Route path={ROUTES.PRIVACY_POLICY} element={<DefaultLayout><PrivacyPolicy /></DefaultLayout>} />

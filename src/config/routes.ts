@@ -9,6 +9,7 @@ export const ROUTES = {
   SERVICE_REGULARIZATION: '/servicos/regularizacao-empresas',
   SERVICE_SMALL_BUSINESS: '/servicos/contabilidade-pequenas-empresas',
   BLOG: '/blog',
+  BLOG_POST: '/blog/:slug',
   CONTACT: '/contato',
   CLIENT_AREA: '/area-cliente',
   PRIVACY_POLICY: '/politica-privacidade',

@@ -33,12 +33,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   };
 
   const navigation = [
-    {
+    /*{
       name: 'Dashboard',
       href: ROUTES.ADMIN_DASHBOARD,
       icon: LayoutDashboard,
       current: location.pathname === ROUTES.ADMIN_DASHBOARD
-    },
+    },*/
     {
       name: 'Blog',
       icon: FileText,
@@ -49,18 +49,18 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         { name: 'Categorias', href: ROUTES.ADMIN_BLOG_CATEGORIES, current: location.pathname === ROUTES.ADMIN_BLOG_CATEGORIES }
       ]
     },
-    {
+    /*{
       name: 'Clientes',
       href: '/admin/clientes',
       icon: Users,
       current: location.pathname.startsWith('/admin/clientes')
-    },
-    {
+    },*/
+    /*{
       name: 'Configurações',
       href: '/admin/configuracoes',
       icon: Settings,
       current: location.pathname.startsWith('/admin/configuracoes')
-    }
+    }*/
   ];
 
   return (
@@ -281,14 +281,6 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                   <Home className="h-4 w-4" />
                   <span>Ver Site</span>
                 </Link>
-                
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center space-x-2 text-sm text-neutral-500 hover:text-red-600"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Sair</span>
-                </button>
               </div>
             </div>
           </div>
@@ -296,7 +288,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
         {/* Page content */}
         <main className="py-6">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </main>
