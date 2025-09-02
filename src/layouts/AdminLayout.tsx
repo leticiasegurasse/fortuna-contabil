@@ -7,7 +7,8 @@ import {
   LogOut, 
   FileText, 
   ChevronDown,
-  Home
+  Home,
+  Tag
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdminAuth } from '../hooks/useAdminAuth';
@@ -55,7 +56,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       children: [
         { name: 'Todos os Posts', href: ROUTES.ADMIN_BLOG, current: location.pathname === ROUTES.ADMIN_BLOG },
         { name: 'Novo Post', href: ROUTES.ADMIN_BLOG_NEW, current: location.pathname === ROUTES.ADMIN_BLOG_NEW },
-        { name: 'Categorias', href: ROUTES.ADMIN_BLOG_CATEGORIES, current: location.pathname === ROUTES.ADMIN_BLOG_CATEGORIES }
+        { name: 'Categorias', href: ROUTES.ADMIN_BLOG_CATEGORIES, current: location.pathname === ROUTES.ADMIN_BLOG_CATEGORIES },
+        { name: 'Tags', href: ROUTES.ADMIN_BLOG_TAGS, current: location.pathname === ROUTES.ADMIN_BLOG_TAGS }
       ]
     },
     /*{

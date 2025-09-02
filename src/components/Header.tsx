@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Users, Briefcase, MessageCircle, User, Phone } from 'lucide-react';
+import { Menu, X, Home, Users, Briefcase, MessageCircle, User, Phone, Book } from 'lucide-react';
 import { ROUTES } from '../config/routes';
 
 const Header = () => {
@@ -21,6 +21,7 @@ const Header = () => {
     { name: 'Home', href: ROUTES.HOME, icon: Home },
     { name: 'Sobre', href: ROUTES.ABOUT, icon: Users },
     { name: 'Serviços', href: ROUTES.SERVICES, icon: Briefcase },
+    { name: 'Blog', href: ROUTES.BLOG, icon: Book },
     { name: 'Contato', href: ROUTES.CONTACT, icon: MessageCircle },
   ];
 

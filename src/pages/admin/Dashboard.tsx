@@ -1,6 +1,8 @@
 import { useAdminAuth } from '../../hooks/useAdminAuth';
-import { Settings, Users, FileText, BarChart3, DollarSign } from 'lucide-react';
+import { Settings, Users, FileText, BarChart3, DollarSign, Edit3, Tag, FolderOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../../config/routes';
 
 const AdminDashboard = () => {
   const { user } = useAdminAuth();
@@ -88,11 +90,64 @@ const AdminDashboard = () => {
           ))}
         </div>
 
-        {/* Quick Actions */}
+        {/* Blog Management Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6 mb-6"
+        >
+          <h3 className="text-lg font-semibold text-secondary-500 mb-4">
+            Gerenciamento do Blog
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link 
+              to={ROUTES.ADMIN_BLOG}
+              className="flex items-center space-x-3 p-4 border border-neutral-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+            >
+              <Edit3 className="h-5 w-5 text-primary-500" />
+              <span className="text-sm font-medium text-secondary-500">
+                Posts do Blog
+              </span>
+            </Link>
+            
+            <Link 
+              to={ROUTES.ADMIN_BLOG_NEW}
+              className="flex items-center space-x-3 p-4 border border-neutral-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+            >
+              <FileText className="h-5 w-5 text-primary-500" />
+              <span className="text-sm font-medium text-secondary-500">
+                Novo Post
+              </span>
+            </Link>
+            
+            <Link 
+              to={ROUTES.ADMIN_BLOG_CATEGORIES}
+              className="flex items-center space-x-3 p-4 border border-neutral-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+            >
+              <FolderOpen className="h-5 w-5 text-primary-500" />
+              <span className="text-sm font-medium text-secondary-500">
+                Categorias
+              </span>
+            </Link>
+            
+            <Link 
+              to={ROUTES.ADMIN_BLOG_TAGS}
+              className="flex items-center space-x-3 p-4 border border-neutral-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors"
+            >
+              <Tag className="h-5 w-5 text-primary-500" />
+              <span className="text-sm font-medium text-secondary-500">
+                Tags
+              </span>
+            </Link>
+          </div>
+        </motion.div>
+
+        {/* Quick Actions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
           className="bg-white rounded-xl shadow-sm border border-neutral-200 p-6"
         >
           <h3 className="text-lg font-semibold text-secondary-500 mb-4">
@@ -120,7 +175,7 @@ const AdminDashboard = () => {
               </span>
             </button>
           </div>
-                 </motion.div>
+        </motion.div>
      </div>
    );
  };

@@ -4,15 +4,32 @@ import { API_CONFIG } from '../config';
 import type { Tag, ApiResponse, PaginatedResponse } from '../types/blog';
 
 export class TagService {
-  // Listar todas as tags
-  async getTags(): Promise<Tag[]> {
+  // Listar todas as tags com paginação e busca
+  async getTags(
+    page: number = 1,
+    limit: number = 10,
+    search?: string,
+    sort: 'postsCount' | 'name' | 'createdAt' = 'postsCount'
+  ): Promise<PaginatedResponse<Tag>> {
     try {
+      const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
+      params.append('sort', sort);
+      
+      if (search) {
+        params.append('search', search);
+      }
+
       const response = await apiService.get<ApiResponse<Tag[]>>(
-        API_CONFIG.ENDPOINTS.TAGS.LIST
+        `${API_CONFIG.ENDPOINTS.TAGS.LIST}?${params.toString()}`
       );
       
-      if (response.success && response.data) {
-        return response.data;
+      if (response.success && response.data && response.pagination) {
+        return {
+          data: response.data,
+          pagination: response.pagination
+        };
       }
       
       throw new Error(response.message || 'Erro ao buscar tags');

@@ -26,6 +26,7 @@ import BlogManagement from '../pages/admin/BlogManagement';
 import NewBlogPost from '../pages/admin/NewBlogPost';
 import EditBlogPost from '../pages/admin/EditBlogPost';
 import BlogCategories from '../pages/admin/BlogCategories';
+import TagManagement from '../pages/admin/TagManagement';
 
 const AppRoutes = () => (
   <BrowserRouter>
@@ -103,6 +104,17 @@ const AppRoutes = () => (
               <AdminProtectedRoute>
                 <AdminLayout>
                   <BlogCategories />
+                </AdminLayout>
+              </AdminProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path={ROUTES.ADMIN_BLOG_TAGS} 
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout>
+                  <TagManagement />
                 </AdminLayout>
               </AdminProtectedRoute>
             } 

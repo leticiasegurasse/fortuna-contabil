@@ -173,15 +173,6 @@ const BlogCategories = () => {
       <div className="mb-8">
         <div className="flex justify-between items-start">
           <div>
-            <div className="flex items-center space-x-4 mb-2">
-              <Link
-                to={ROUTES.ADMIN_BLOG}
-                className="flex items-center space-x-2 text-neutral-500 hover:text-neutral-700"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                <span>Voltar ao Blog</span>
-              </Link>
-            </div>
             <h1 className="text-2xl font-bold text-secondary-500">
               Categorias do Blog
             </h1>
