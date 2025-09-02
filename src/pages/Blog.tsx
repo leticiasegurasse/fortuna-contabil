@@ -5,6 +5,7 @@ import { postService } from '../services/postService';
 import { categoryService } from '../services/categoryService';
 import type { Post, Category } from '../types/blog';
 import NewsletterSignup from '../components/NewsletterSignup';
+import uploadService from '../services/uploadService';
 
 const Blog = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -236,7 +237,7 @@ const Blog = () => {
                       <div className="h-48 overflow-hidden">
                         {post.image ? (
                           <img
-                            src={post.image}
+                            src={uploadService.getImageUrl(post.image)}
                             alt={post.title}
                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           />

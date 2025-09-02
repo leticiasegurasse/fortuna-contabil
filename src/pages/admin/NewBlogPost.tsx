@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import { categoryService, postService, authService, tagService } from '../../services';
+import uploadService from '../../services/uploadService';
 import type { Category, Tag, PostFormData, ContentBlock } from '../../types/blog';
 import { generateSlug } from '../../utils/slug';
 
@@ -232,32 +233,24 @@ const NewBlogPost = () => {
   const handleImageFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!file.type.startsWith('image/')) {
-        setError('Por favor, selecione apenas arquivos de imagem (JPG, PNG, GIF, etc.)');
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        setError('A imagem deve ter no máximo 5MB');
+      // Validar arquivo usando o serviço
+      const validation = uploadService.validateImageFile(file);
+      if (!validation.isValid) {
+        setError(validation.error || 'Arquivo inválido');
         return;
       }
 
       setImageFile(file);
       setError('');
 
-             compressImage(file, 0.85, 800).then((compressedDataUrl) => {
-        const base64Size = Math.ceil((compressedDataUrl.length * 3) / 4);
-        const sizeInMB = base64Size / (1024 * 1024);
-        
-        if (sizeInMB > 2) {
-          setError('A imagem ainda está muito grande após compressão. Tente uma imagem menor.');
-          return;
-        }
-        
-        setImagePreview(compressedDataUrl);
-        setFormData(prev => ({ ...prev, image: compressedDataUrl }));
+      // Criar preview usando o serviço de compressão
+      uploadService.compressImage(file, 0.85, 800).then((compressedBlob) => {
+        const url = URL.createObjectURL(compressedBlob);
+        setImagePreview(url);
+        setFormData(prev => ({ ...prev, image: url }));
       }).catch((error) => {
         console.error('Erro ao comprimir imagem:', error);
+        // Fallback: criar preview sem compressão
         const reader = new FileReader();
         reader.onload = (e) => {
           const result = e.target?.result as string;
@@ -308,15 +301,38 @@ const NewBlogPost = () => {
     }
   };
 
-  const uploadImageToServer = async (_file: File): Promise<string> => {
+  const uploadImageToServer = async (file: File): Promise<string> => {
     try {
       setUploadingImage(true);
-             const compressedImage = await compressImage(_file, 0.8, 600);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      return compressedImage;
+      
+      // Validar arquivo
+      const validation = uploadService.validateImageFile(file);
+      if (!validation.isValid) {
+        throw new Error(validation.error || 'Arquivo inválido');
+      }
+
+      // Comprimir imagem antes do upload
+      const compressedBlob = await uploadService.compressImage(file, 0.8, 800);
+      
+      // Converter blob para File
+      const compressedFile = new File([compressedBlob], file.name, {
+        type: 'image/jpeg',
+        lastModified: Date.now()
+      });
+
+      // Fazer upload para o servidor
+      const token = await authService.getValidToken();
+      if (!token) {
+        throw new Error('Token de autenticação inválido');
+      }
+
+      const response = await uploadService.uploadImage(compressedFile, token);
+      
+      // Retornar URL da imagem
+      return uploadService.getImageUrl(response.data.filename);
     } catch (error) {
       console.error('Erro no upload:', error);
-      throw new Error('Falha no upload da imagem');
+      throw new Error(error instanceof Error ? error.message : 'Falha no upload da imagem');
     } finally {
       setUploadingImage(false);
     }

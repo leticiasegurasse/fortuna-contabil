@@ -18,6 +18,7 @@ import { postService } from '../services/postService';
 import { ROUTES } from '../config/routes';
 import type { Post } from '../types/blog';
 import NewsletterSignup from '../components/NewsletterSignup';
+import uploadService from '../services/uploadService';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -147,7 +148,7 @@ const BlogPost = () => {
             return (
               <div key={block.id || index} className="my-6">
                 <img
-                  src={block.content}
+                  src={uploadService.getImageUrl(block.content)}
                   alt={block.metadata?.imageAlt || 'Imagem do post'}
                   className="w-full h-auto rounded-lg shadow-md"
                 />
@@ -326,7 +327,7 @@ const BlogPost = () => {
             {post.image && (
               <div className="mb-8">
                 <img
-                  src={post.image}
+                  src={uploadService.getImageUrl(post.image)}
                   alt={post.title}
                   className="w-full h-64 lg:h-96 object-cover rounded-xl shadow-lg"
                 />
