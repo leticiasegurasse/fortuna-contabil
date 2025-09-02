@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, MessageCircle, CheckCircle } from 'lucide-react';
 import SectionDivider from '../components/SectionDivider';
 import CTASection from '../components/CTASection';
 

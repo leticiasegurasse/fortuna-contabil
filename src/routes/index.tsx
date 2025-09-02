@@ -21,6 +21,7 @@ import NotFound from '../pages/NotFound';
 import AdminLogin from '../pages/admin/Login';
 import AdminDashboard from '../pages/admin/Dashboard';
 import AdminProtectedRoute from '../components/AdminProtectedRoute';
+import PublicRoute from '../components/PublicRoute';
 import AdminLayout from '../layouts/AdminLayout';
 import BlogManagement from '../pages/admin/BlogManagement';
 import NewBlogPost from '../pages/admin/NewBlogPost';
@@ -51,7 +52,14 @@ const AppRoutes = () => (
           <Route path={ROUTES.PRIVACY_POLICY} element={<DefaultLayout><PrivacyPolicy /></DefaultLayout>} />
           
           {/* Rotas do painel administrativo - Sem layout padrão */}
-          <Route path={ROUTES.ADMIN_LOGIN} element={<AdminLogin />} />
+          <Route 
+            path={ROUTES.ADMIN_LOGIN} 
+            element={
+              <PublicRoute>
+                <AdminLogin />
+              </PublicRoute>
+            } 
+          />
           
           {/* Rotas do painel administrativo - Com layout AdminLayout */}
           <Route 
