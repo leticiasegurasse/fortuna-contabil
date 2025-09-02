@@ -70,6 +70,10 @@ const BlogPost = () => {
 
   // Tempo de leitura estimado para blocos de conteúdo
   const getReadingTimeFromBlocks = (contentBlocks: any[]) => {
+    if (!contentBlocks || contentBlocks.length === 0) {
+      return 1;
+    }
+    
     const wordsPerMinute = 200;
     const totalContent = contentBlocks
       .map(block => block.content || '')

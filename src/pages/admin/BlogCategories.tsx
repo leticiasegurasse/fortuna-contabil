@@ -1,87 +1,113 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   Plus, 
   Search, 
-  Edit, 
-  Trash2, 
   Tag,
-  MoreVertical,
-  X,
   AlertCircle,
-  ArrowLeft
+  Loader2
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ROUTES } from '../../config/routes';
-
-interface Category {
-  id: number;
-  name: string;
-  slug: string;
-  description: string;
-  color: string;
-  postsCount: number;
-  createdAt: string;
-}
+import { categoryService } from '../../services/categoryService';
+import { useAdminAuth } from '../../hooks/useAdminAuth';
+import type { Category } from '../../types/blog';
+import Pagination from '../../components/Pagination';
+import CategoryCard from '../../components/CategoryCard';
+import CategoryModal from '../../components/CategoryModal';
+import CategoryDeleteModal from '../../components/CategoryDeleteModal';
 
 const BlogCategories = () => {
+  const { token, isAuthenticated } = useAdminAuth();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCategories, setTotalCategories] = useState(0);
+  const [deletingCategories, setDeletingCategories] = useState<number[]>([]);
+  
+  // Estados para modais
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState<Category | null>(null);
-
-  // Dados mockados para demonstração
-  const [categories, setCategories] = useState<Category[]>([
-    {
-      id: 1,
-      name: 'Abertura de Empresas',
-      slug: 'abertura-empresas',
-      description: 'Artigos sobre abertura e formalização de empresas',
-      color: '#3B82F6',
-      postsCount: 12,
-      createdAt: '2024-01-15'
-    },
-    {
-      id: 2,
-      name: 'Imposto de Renda',
-      slug: 'imposto-renda',
-      description: 'Dicas e orientações sobre declaração de IR',
-      color: '#10B981',
-      postsCount: 8,
-      createdAt: '2024-01-10'
-    },
-    {
-      id: 3,
-      name: 'Consultoria',
-      slug: 'consultoria',
-      description: 'Serviços de consultoria contábil e empresarial',
-      color: '#F59E0B',
-      postsCount: 5,
-      createdAt: '2024-01-08'
-    },
-    {
-      id: 4,
-      name: 'Legislação',
-      slug: 'legislacao',
-      description: 'Atualizações e mudanças na legislação',
-      color: '#EF4444',
-      postsCount: 15,
-      createdAt: '2024-01-05'
-    }
-  ]);
-
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     color: '#3B82F6'
   });
+  const [submitting, setSubmitting] = useState(false);
 
-  const filteredCategories = categories.filter(category =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    category.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Carregar categorias do banco de dados
+  const loadCategories = async () => {
+    if (!token) return;
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      console.log('Fazendo requisição para página:', currentPage);
+      
+      const response = await categoryService.getCategories(
+        currentPage,
+        9, // 9 categorias por página
+        searchTerm || undefined
+      );
+      
+      console.log('Resposta recebida:', response);
+      
+      setCategories(response.data);
+      setTotalCategories(response.pagination.total);
+      setTotalPages(response.pagination.pages);
+    } catch (err) {
+      console.error('Erro ao carregar categorias:', err);
+      setError('Erro ao carregar categorias. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  // Carregar categorias quando autenticado
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      loadCategories();
+    }
+  }, [isAuthenticated, token]);
+
+  // Função de busca com debounce
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentPage(1); // Reset para primeira página ao mudar busca
+      loadCategories();
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Reset para primeira página quando necessário
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1);
+    }
+  }, [totalPages, currentPage]);
+
+  // Carregar categorias quando mudar página
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      console.log('Carregando categorias para página:', currentPage);
+      loadCategories();
+    }
+  }, [currentPage, isAuthenticated, token]);
+
+  // Função para recarregar categorias (usada em callbacks)
+  const reloadCategories = useCallback(() => {
+    if (isAuthenticated && token) {
+      loadCategories();
+    }
+  }, [isAuthenticated, token]);
+
+  // Selecionar/deselecionar categoria individual
   const handleSelectCategory = (categoryId: number) => {
     setSelectedCategories(prev => 
       prev.includes(categoryId) 
@@ -90,82 +116,113 @@ const BlogCategories = () => {
     );
   };
 
-
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const generateSlug = (name: string) => {
-    return name
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  };
-
+  // Abrir modal para criar nova categoria
   const handleCreateCategory = () => {
-    if (!formData.name.trim()) return;
-
-    const newCategory: Category = {
-      id: Date.now(),
-      name: formData.name.trim(),
-      slug: generateSlug(formData.name),
-      description: formData.description.trim(),
-      color: formData.color,
-      postsCount: 0,
-      createdAt: new Date().toISOString().split('T')[0]
-    };
-
-    setCategories(prev => [...prev, newCategory]);
-    setFormData({ name: '', description: '', color: '#3B82F6' });
-    setShowCreateModal(false);
-  };
-
-  const handleEditCategory = () => {
-    if (!editingCategory || !formData.name.trim()) return;
-
-    const updatedCategory: Category = {
-      ...editingCategory,
-      name: formData.name.trim(),
-      slug: generateSlug(formData.name),
-      description: formData.description.trim(),
-      color: formData.color
-    };
-
-    setCategories(prev => 
-      prev.map(cat => cat.id === editingCategory.id ? updatedCategory : cat)
-    );
-    
-    setFormData({ name: '', description: '', color: '#3B82F6' });
     setEditingCategory(null);
+    setFormData({
+      name: '',
+      description: '',
+      color: '#3B82F6'
+    });
+    setShowCreateModal(true);
   };
 
-  const handleDeleteCategory = (category: Category) => {
-    setCategories(prev => prev.filter(cat => cat.id !== category.id));
-    setShowDeleteModal(null);
-  };
-
+  // Abrir modal para editar categoria
   const openEditModal = (category: Category) => {
     setEditingCategory(category);
     setFormData({
       name: category.name,
-      description: category.description,
-      color: category.color
+      description: category.description || '',
+      color: category.color || '#3B82F6'
     });
   };
 
+  // Fechar modais
   const closeModals = () => {
     setShowCreateModal(false);
     setEditingCategory(null);
     setShowDeleteModal(null);
-    setFormData({ name: '', description: '', color: '#3B82F6' });
+    setFormData({
+      name: '',
+      description: '',
+      color: '#3B82F6'
+    });
+    setSubmitting(false);
   };
+
+  // Gerenciar mudanças no formulário
+  const handleFormDataChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Salvar categoria (criar ou atualizar)
+  const handleSaveCategory = async () => {
+    if (!token || !formData.name.trim()) return;
+    
+    try {
+      setSubmitting(true);
+      
+      if (editingCategory) {
+        // Atualizar categoria existente
+        await categoryService.updateCategory(editingCategory.id, formData, token);
+      } else {
+        // Criar nova categoria
+        await categoryService.createCategory(formData, token);
+      }
+      
+      // Recarregar categorias e fechar modal
+      await reloadCategories();
+      closeModals();
+    } catch (err: any) {
+      console.error('Erro ao salvar categoria:', err);
+      setError(err.message || 'Erro ao salvar categoria');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Excluir categoria
+  const handleDeleteCategory = async (category: Category) => {
+    if (!token) return;
+    
+    // Validação adicional: não permitir exclusão se houver posts associados
+    if (category.postsCount > 0) {
+      setError(`Não é possível excluir a categoria "${category.name}" pois ela possui ${category.postsCount} post(s) associado(s).`);
+      return;
+    }
+    
+    try {
+      setDeletingCategories(prev => [...prev, category.id]);
+      await categoryService.deleteCategory(category.id, token);
+      
+      // Recarregar categorias e fechar modal
+      await reloadCategories();
+      setShowDeleteModal(null);
+      setSelectedCategories(prev => prev.filter(id => id !== category.id));
+    } catch (err: any) {
+      console.error('Erro ao excluir categoria:', err);
+      setError(err.message || 'Erro ao excluir categoria');
+    } finally {
+      setDeletingCategories(prev => prev.filter(id => id !== category.id));
+    }
+  };
+
+  // Filtrar categorias baseado na busca (fallback local)
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    category.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background-500 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary-500" />
+          <p className="text-neutral-600">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -182,7 +239,7 @@ const BlogCategories = () => {
           </div>
           
           <button
-            onClick={() => setShowCreateModal(true)}
+            onClick={handleCreateCategory}
             className="inline-flex items-center space-x-2 bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors"
           >
             <Plus className="h-4 w-4" />
@@ -190,6 +247,24 @@ const BlogCategories = () => {
           </button>
         </div>
       </div>
+
+      {/* Mensagem de erro */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-center gap-3"
+        >
+          <AlertCircle className="h-5 w-5 text-red-500" />
+          <span className="text-red-700">{error}</span>
+          <button
+            onClick={() => setError(null)}
+            className="ml-auto text-red-500 hover:text-red-700"
+          >
+            ×
+          </button>
+        </motion.div>
+      )}
 
       {/* Search */}
       <div className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 mb-6">
@@ -206,73 +281,28 @@ const BlogCategories = () => {
       </div>
 
       {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCategories.map((category) => (
-          <motion.div
-            key={category.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-start justify-between mb-4">
-              <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  checked={selectedCategories.includes(category.id)}
-                  onChange={() => handleSelectCategory(category.id)}
-                  className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
-                />
-                <div 
-                  className="w-4 h-4 rounded-full"
-                  style={{ backgroundColor: category.color }}
-                />
-              </div>
-              
-              <div className="relative">
-                <button className="p-1 rounded-lg text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100">
-                  <MoreVertical className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
+      {loading ? (
+        <div className="text-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary-500" />
+          <p className="text-neutral-600">Carregando categorias...</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCategories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              category={category}
+              isSelected={selectedCategories.includes(category.id)}
+              onSelect={handleSelectCategory}
+              onEdit={openEditModal}
+              onDelete={setShowDeleteModal}
+              isDeleting={deletingCategories.includes(category.id)}
+            />
+          ))}
+        </div>
+      )}
 
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-secondary-500 mb-2">
-                {category.name}
-              </h3>
-              <p className="text-sm text-neutral-600 mb-3">
-                {category.description}
-              </p>
-              <div className="flex items-center justify-between text-xs text-neutral-500">
-                <span>Slug: {category.slug}</span>
-                <span>{category.postsCount} posts</span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between pt-4 border-t border-neutral-100">
-              <span className="text-xs text-neutral-500">
-                Criada em {new Date(category.createdAt).toLocaleDateString('pt-BR')}
-              </span>
-              
-              <div className="flex items-center space-x-2">
-                <button
-                  onClick={() => openEditModal(category)}
-                  className="p-2 text-neutral-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                >
-                  <Edit className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => setShowDeleteModal(category)}
-                  className="p-2 text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {filteredCategories.length === 0 && (
+      {!loading && filteredCategories.length === 0 && (
         <div className="text-center py-12">
           <Tag className="mx-auto h-12 w-12 text-neutral-400" />
           <h3 className="mt-2 text-sm font-medium text-neutral-900">
@@ -287,7 +317,7 @@ const BlogCategories = () => {
           {!searchTerm && (
             <div className="mt-6">
               <button
-                onClick={() => setShowCreateModal(true)}
+                onClick={handleCreateCategory}
                 className="inline-flex items-center space-x-2 bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors"
               >
                 <Plus className="h-4 w-4" />
@@ -299,164 +329,32 @@ const BlogCategories = () => {
       )}
 
       {/* Create/Edit Modal */}
-      <AnimatePresence>
-        {(showCreateModal || editingCategory) && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          >
-            <div className="fixed inset-0 bg-neutral-900/50" onClick={closeModals} />
-            
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="relative bg-white rounded-lg shadow-xl w-full max-w-md"
-            >
-              <div className="flex items-center justify-between p-6 border-b border-neutral-200">
-                <h3 className="text-lg font-semibold text-secondary-500">
-                  {editingCategory ? 'Editar Categoria' : 'Nova Categoria'}
-                </h3>
-                <button
-                  onClick={closeModals}
-                  className="p-2 text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 rounded-lg"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
+      <CategoryModal
+        isOpen={showCreateModal || !!editingCategory}
+        editingCategory={editingCategory}
+        formData={formData}
+        submitting={submitting}
+        onClose={closeModals}
+        onSave={handleSaveCategory}
+        onFormDataChange={handleFormDataChange}
+      />
 
-              <form className="p-6 space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-secondary-500 mb-2">
-                    Nome da Categoria
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Digite o nome da categoria..."
-                    required
-                  />
-                </div>
+             {/* Delete Confirmation Modal */}
+       <CategoryDeleteModal
+         category={showDeleteModal}
+         isDeleting={deletingCategories.includes(showDeleteModal?.id || 0)}
+         onClose={() => setShowDeleteModal(null)}
+         onConfirm={() => showDeleteModal && handleDeleteCategory(showDeleteModal)}
+       />
 
-                <div>
-                  <label className="block text-sm font-medium text-secondary-500 mb-2">
-                    Descrição
-                  </label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    placeholder="Digite uma descrição..."
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-secondary-500 mb-2">
-                    Cor
-                  </label>
-                  <div className="flex items-center space-x-3">
-                    <input
-                      type="color"
-                      name="color"
-                      value={formData.color}
-                      onChange={handleInputChange}
-                      className="w-12 h-10 border border-neutral-300 rounded-lg cursor-pointer"
-                    />
-                    <span className="text-sm text-neutral-600">
-                      {formData.color}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-end space-x-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={closeModals}
-                    className="px-4 py-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={editingCategory ? handleEditCategory : handleCreateCategory}
-                    className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
-                  >
-                    {editingCategory ? 'Salvar' : 'Criar'}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Delete Confirmation Modal */}
-      <AnimatePresence>
-        {showDeleteModal && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          >
-            <div className="fixed inset-0 bg-neutral-900/50" onClick={() => setShowDeleteModal(null)} />
-            
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="relative bg-white rounded-lg shadow-xl w-full max-w-md"
-            >
-              <div className="p-6">
-                <div className="flex items-center space-x-3 mb-4">
-                  <div className="p-2 bg-red-100 rounded-lg">
-                    <AlertCircle className="h-6 w-6 text-red-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-secondary-500">
-                      Excluir Categoria
-                    </h3>
-                    <p className="text-sm text-neutral-600">
-                      Esta ação não pode ser desfeita.
-                    </p>
-                  </div>
-                </div>
-
-                <p className="text-sm text-neutral-700 mb-6">
-                  Tem certeza que deseja excluir a categoria <strong>"{showDeleteModal.name}"</strong>? 
-                  {showDeleteModal.postsCount > 0 && (
-                    <span className="block mt-2 text-red-600">
-                      ⚠️ Esta categoria possui {showDeleteModal.postsCount} post(s) associado(s).
-                    </span>
-                  )}
-                </p>
-
-                <div className="flex items-center justify-end space-x-3">
-                  <button
-                    onClick={() => setShowDeleteModal(null)}
-                    className="px-4 py-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCategory(showDeleteModal)}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                  >
-                    Excluir
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Paginação */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        totalItems={totalCategories}
+        onPageChange={setCurrentPage}
+        itemName="categorias"
+      />
     </div>
   );
 };

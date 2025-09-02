@@ -40,7 +40,7 @@ const Blog = () => {
         
         // Carregar categorias
         const categoriesResponse = await categoryService.getCategories();
-        setCategories(categoriesResponse);
+        setCategories(categoriesResponse.data || []);
         
         // Carregar posts com paginação
         const postsResponse = await postService.getPosts(

@@ -71,11 +71,12 @@ const NewBlogPost = () => {
       setCategoriesLoading(true);
       setError('');
       
-      const categories = await categoryService.getCategories();
-      setCategories(categories);
+      const response = await categoryService.getCategories();
+      setCategories(response.data || []);
     } catch (error) {
       console.error('Erro ao buscar categorias:', error);
       setError('Erro ao carregar categorias. Verifique se o backend está rodando.');
+      setCategories([]);
     } finally {
       setCategoriesLoading(false);
     }
@@ -86,10 +87,12 @@ const NewBlogPost = () => {
       setTagsLoading(true);
       setError('');
       
-      const tags = await tagService.getTags();
-      setTags(tags);
+      const response = await tagService.getTags();
+      setTags(response.data || []);
     } catch (error) {
       console.error('Erro ao buscar tags:', error);
+      setTags([]);
+    } finally {
       setTagsLoading(false);
     }
   };

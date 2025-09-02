@@ -4,27 +4,35 @@ import { API_CONFIG, DEBUG_CONFIG } from '../config';
 import type { Category, ApiResponse, PaginatedResponse } from '../types/blog';
 
 export class CategoryService {
-  // Listar todas as categorias
-  async getCategories(): Promise<Category[]> {
+  // Listar todas as categorias com paginação e busca
+  async getCategories(
+    page: number = 1,
+    limit: number = 10,
+    search?: string
+  ): Promise<PaginatedResponse<Category>> {
     try {
+      const params = new URLSearchParams();
+      params.append('page', page.toString());
+      params.append('limit', limit.toString());
+      
+      if (search) {
+        params.append('search', search);
+      }
+
       const response = await apiService.get<ApiResponse<Category[]>>(
-        API_CONFIG.ENDPOINTS.CATEGORIES.LIST
+        `${API_CONFIG.ENDPOINTS.CATEGORIES.LIST}?${params.toString()}`
       );
       
-      if (response.success && response.data) {
-        return response.data;
+      if (response.success && response.data && response.pagination) {
+        return {
+          data: response.data,
+          pagination: response.pagination
+        };
       }
       
       throw new Error(response.message || 'Erro ao buscar categorias');
     } catch (error) {
       console.error('Erro no CategoryService.getCategories:', error);
-      
-      // Fallback para dados mock em desenvolvimento
-      if (DEBUG_CONFIG.MOCK_DATA && DEBUG_CONFIG.ENABLE_LOGS) {
-        console.warn('Usando dados mock para categorias');
-        return DEBUG_CONFIG.MOCK_CATEGORIES;
-      }
-      
       throw error;
     }
   }
