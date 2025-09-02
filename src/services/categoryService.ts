@@ -1,6 +1,6 @@
 // Serviço para gerenciar categorias
 import { apiService } from './api';
-import { API_CONFIG, DEBUG_CONFIG } from '../config';
+import { API_CONFIG } from '../config';
 import type { Category, ApiResponse, PaginatedResponse } from '../types/blog';
 
 export class CategoryService {

@@ -7,7 +7,6 @@ import {
   Loader2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { ROUTES } from '../../config/routes';
 import { categoryService } from '../../services/categoryService';
 import { useAdminAuth } from '../../hooks/useAdminAuth';
 import type { Category } from '../../types/blog';

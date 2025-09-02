@@ -7,8 +7,7 @@ import {
   LogOut, 
   FileText, 
   ChevronDown,
-  Home,
-  Tag
+  Home
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdminAuth } from '../hooks/useAdminAuth';
