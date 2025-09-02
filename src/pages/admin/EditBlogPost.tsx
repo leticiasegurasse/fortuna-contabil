@@ -289,31 +289,7 @@ const EditBlogPost = () => {
     }
   };
 
-  const compressImage = (file: File, quality: number = 0.85, maxWidth: number = 1000): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new window.Image();
-
-      img.onload = () => {
-        let { width, height } = img;
-        
-        if (width > maxWidth) {
-          height = (height * maxWidth) / width;
-          width = maxWidth;
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        ctx?.drawImage(img, 0, 0, width, height);
-        const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
-        resolve(compressedDataUrl);
-      };
-
-      img.onerror = reject;
-      img.src = URL.createObjectURL(file);
-    });
-  };
+  // Função compressImage removida - agora usa uploadService.compressImage
 
   const handleUploadClick = () => {
     fileInputRef.current?.click();
@@ -356,7 +332,11 @@ const EditBlogPost = () => {
       const response = await uploadService.uploadImage(compressedFile, token);
       
       // Retornar URL da imagem
-      return uploadService.getImageUrl(response.data.filename);
+      if (response.data?.filename) {
+        return uploadService.getImageUrl(response.data.filename);
+      } else {
+        throw new Error('Nome do arquivo não recebido do servidor');
+      }
     } catch (error) {
       console.error('Erro no upload:', error);
       throw new Error(error instanceof Error ? error.message : 'Falha no upload da imagem');
@@ -542,7 +522,7 @@ const EditBlogPost = () => {
               <div className="flex items-center space-x-3">
                 <button
                   type="button"
-                  onClick={() => {
+                  onClick={async () => {
                     const input = document.createElement('input');
                     input.type = 'file';
                     input.accept = 'image/*';
@@ -550,10 +530,36 @@ const EditBlogPost = () => {
                       const file = (e.target as HTMLInputElement).files?.[0];
                       if (file) {
                         try {
-                                                     const compressedImage = await compressImage(file, 0.85, 800);
-                          updateContentBlock(block.id, { content: compressedImage });
+                          // Validar arquivo
+                          const validation = uploadService.validateImageFile(file);
+                          if (!validation.isValid) {
+                            setError(validation.error || 'Arquivo inválido');
+                            return;
+                          }
+
+                          // Comprimir imagem
+                          const compressedBlob = await uploadService.compressImage(file, 0.85, 800);
+                          const compressedFile = new File([compressedBlob], file.name, { type: file.type });
+
+                          // Fazer upload para o servidor
+                          const token = await authService.getValidToken();
+                          if (!token) {
+                            throw new Error('Token de autenticação inválido');
+                          }
+                          const response = await uploadService.uploadImage(compressedFile, token);
+                          
+                          // Atualizar o content block com a URL da imagem
+                          if (response.data?.filename) {
+                            const imageUrl = uploadService.getImageUrl(response.data.filename);
+                            updateContentBlock(block.id, { content: imageUrl });
+                          } else {
+                            throw new Error('Nome do arquivo não recebido do servidor');
+                          }
+                          
+                          setError('');
                         } catch (error) {
-                          console.error('Erro ao processar imagem:', error);
+                          console.error('Erro ao fazer upload da imagem:', error);
+                          setError('Erro ao fazer upload da imagem. Tente novamente.');
                         }
                       }
                     };
