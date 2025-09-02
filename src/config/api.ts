@@ -1,7 +1,7 @@
 // Configuração da API
 export const API_CONFIG = {
   // URL base da API (ajuste conforme seu ambiente)
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:3001',
+  BASE_URL: import.meta.env.VITE_API_URL || 'https://api.fortunacontabil.com.br',
   
   // Endpoints da API
   ENDPOINTS: {

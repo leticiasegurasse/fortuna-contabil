@@ -27,11 +27,29 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simular envio do formulário
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // Formatar mensagem para WhatsApp
+    const whatsappMessage = `*Nova mensagem do site Fortuna Contábil*
+
+*Nome:* ${formData.name}
+*E-mail:* ${formData.email}
+*Telefone:* ${formData.phone}
+${formData.company ? `*Empresa:* ${formData.company}\n` : ''}
+${formData.service ? `*Serviço de Interesse:* ${formData.service}\n` : ''}
+*Mensagem:* ${formData.message}
+
+_Enviado através do formulário de contato do site_`;
+
+    // Codificar a mensagem para URL
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    const whatsappUrl = `https://wa.me/5531990726579?text=${encodedMessage}`;
+    
+    // Simular um pequeno delay para mostrar o loading
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     setIsSubmitting(false);
-    setIsSubmitted(true);
+    
+    // Redirecionar para o WhatsApp
+    window.open(whatsappUrl, '_blank');
     
     // Reset form
     setFormData({
@@ -126,6 +144,15 @@ const Contact = () => {
               <h3 className="text-2xl font-bold text-secondary-500 mb-6">
                 Envie sua Mensagem
               </h3>
+              
+              <div className="bg-accent-50 border border-accent-200 rounded-lg p-4 mb-6">
+                <div className="flex items-center space-x-2 text-accent-700">
+                  <MessageCircle size={20} />
+                  <p className="text-sm font-medium">
+                    Sua mensagem será enviada diretamente para nosso WhatsApp para um atendimento mais rápido!
+                  </p>
+                </div>
+              </div>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -239,12 +266,12 @@ const Contact = () => {
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Enviando...
+                      Preparando WhatsApp...
                     </>
                   ) : (
                     <>
-                      Enviar Mensagem
-                      <Send size={20} className="ml-2" />
+                      Enviar via WhatsApp
+                      <MessageCircle size={20} className="ml-2" />
                     </>
                   )}
                 </button>

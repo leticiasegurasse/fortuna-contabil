@@ -375,9 +375,8 @@ const Blog = () => {
                 </div>
               </div>
 
-              {/* Newsletter */}
+              {/* Newsletter 
               <div className="bg-gradient-to-br from-accent-500 to-accent-600 text-white rounded-xl p-6 relative overflow-hidden">
-                {/* Background Pattern */}
                 <div className="absolute inset-0 opacity-10">
                   <div className="absolute top-0 left-0 w-20 h-20 bg-primary-400 rounded-full -translate-x-10 -translate-y-10"></div>
                   <div className="absolute bottom-0 right-0 w-16 h-16 bg-primary-300 rounded-full translate-x-8 translate-y-8"></div>
@@ -405,6 +404,7 @@ const Blog = () => {
                   </form>
                 </div>
               </div>
+              */}
 
               {/* Recent Posts */}
               <div className="bg-white rounded-xl shadow-lg p-6 border border-neutral-100">
