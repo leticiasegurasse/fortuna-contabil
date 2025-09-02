@@ -4,8 +4,6 @@ import {
   Calendar, 
   User, 
   Tag, 
-  ArrowLeft, 
-  Share2, 
   Eye, 
   Clock,
   Facebook,
@@ -15,7 +13,6 @@ import {
   Copy,
   Check
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { postService } from '../services/postService';
 import { ROUTES } from '../config/routes';
 import type { Post } from '../types/blog';
@@ -84,7 +81,6 @@ const BlogPost = () => {
     
     const url = window.location.href;
     const title = post.title;
-    const text = post.excerpt;
     
     const shareUrls = {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,

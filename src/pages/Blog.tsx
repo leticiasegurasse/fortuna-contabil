@@ -2,17 +2,14 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, User, ArrowRight, Search, Tag, Loader2 } from 'lucide-react';
 import { postService } from '../services/postService';
-import type { Post, Category } from '../types/blog';
+import type { Post } from '../types/blog';
 
 const Blog = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage] = useState(1);
 
   const popularTags = [
     'MEI',
@@ -35,7 +32,6 @@ const Blog = () => {
         // Carregar posts publicados
         const postsResponse = await postService.getPosts(currentPage, 10, 'published');
         setPosts(postsResponse.data);
-        setTotalPages(postsResponse.pagination.pages);
         
         // TODO: Implementar carregamento de categorias quando o serviço estiver disponível
         // const categoriesResponse = await categoryService.getCategories();
@@ -49,19 +45,7 @@ const Blog = () => {
     };
 
     loadData();
-  }, [currentPage, searchTerm, selectedCategory]);
-
-  // Função de busca com debounce
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (searchTerm !== '') {
-        setCurrentPage(1);
-        // Implementar busca quando o serviço estiver disponível
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [currentPage, selectedCategory]);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

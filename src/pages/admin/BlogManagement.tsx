@@ -9,7 +9,6 @@ import {
   Calendar, 
   User, 
   Tag,
-  MoreVertical,
   FileText,
   Loader2,
   AlertCircle,

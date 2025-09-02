@@ -5,10 +5,7 @@ import {
   Menu, 
   X, 
   LogOut, 
-  LayoutDashboard, 
   FileText, 
-  Users, 
-  Settings, 
   ChevronDown,
   Home
 } from 'lucide-react';
@@ -18,6 +15,18 @@ import { ROUTES } from '../config/routes';
 
 interface AdminLayoutProps {
   children: ReactNode;
+}
+
+interface NavigationItem {
+  name: string;
+  icon: React.ComponentType<any>;
+  current: boolean;
+  href?: string;
+  children?: {
+    name: string;
+    href: string;
+    current: boolean;
+  }[];
 }
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
@@ -32,7 +41,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     navigate(ROUTES.ADMIN_LOGIN);
   };
 
-  const navigation = [
+  const navigation: NavigationItem[] = [
     /*{
       name: 'Dashboard',
       href: ROUTES.ADMIN_DASHBOARD,
@@ -51,7 +60,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     },
     /*{
       name: 'Clientes',
-      href: '/admin/clientes',
+      href: '/admin/configuracoes',
       icon: Users,
       current: location.pathname.startsWith('/admin/clientes')
     },*/
