@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Edit, Trash2, MoreVertical } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import type { Category } from '../types/blog';
 
 interface CategoryCardProps {
@@ -14,8 +14,6 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({
   category,
-  isSelected,
-  onSelect,
   onEdit,
   onDelete,
   isDeleting

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Edit, Trash2, MoreVertical } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
 import type { Tag } from '../types/blog';
 
 interface TagCardProps {
@@ -14,8 +14,6 @@ interface TagCardProps {
 
 const TagCard: React.FC<TagCardProps> = ({
   tag,
-  isSelected,
-  onSelect,
   onEdit,
   onDelete,
   isDeleting

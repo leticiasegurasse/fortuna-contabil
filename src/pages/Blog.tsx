@@ -21,16 +21,7 @@ const Blog = () => {
     pages: 0
   });
 
-  const popularTags = [
-    'MEI',
-    'Abertura de Empresa',
-    'Declaração Anual',
-    'Imposto de Renda',
-    'Finanças',
-    'Regularização',
-    'Consultoria',
-    'Dicas'
-  ];
+
 
   // Carregar posts e categorias
   useEffect(() => {
