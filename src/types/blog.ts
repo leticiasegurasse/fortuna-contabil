@@ -29,12 +29,29 @@ export interface User {
   role: string;
 }
 
+// Interface para blocos de conteúdo
+export interface ContentBlock {
+  id: string;
+  type: 'title' | 'paragraph' | 'image' | 'subtitle' | 'list' | 'quote';
+  content: string;
+  order: number;
+  metadata?: {
+    level?: number; // Para títulos (h1, h2, h3, etc.)
+    alignment?: 'left' | 'center' | 'right';
+    imageAlt?: string; // Para imagens
+    imageCaption?: string; // Para imagens
+    listType?: 'ordered' | 'unordered'; // Para listas
+    quoteAuthor?: string; // Para citações
+    [key: string]: any; // Para outros metadados
+  };
+}
+
 export interface Post {
   id: number;
   title: string;
   slug: string;
   excerpt: string;
-  content: string;
+  contentBlocks: ContentBlock[]; // Campo obrigatório para conteúdo estruturado
   status: 'draft' | 'published' | 'archived';
   image?: string;
   views: number;
@@ -51,7 +68,7 @@ export interface Post {
 export interface PostFormData {
   title: string;
   excerpt: string;
-  content: string;
+  contentBlocks: ContentBlock[]; // Campo obrigatório para conteúdo estruturado
   image: string;
   categoryId: string;
   status: 'draft' | 'published' | 'archived';

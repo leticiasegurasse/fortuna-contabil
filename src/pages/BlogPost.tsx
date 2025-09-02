@@ -11,7 +11,8 @@ import {
   Linkedin,
   MessageSquare,
   Copy,
-  Check
+  Check,
+  ArrowRight
 } from 'lucide-react';
 import { postService } from '../services/postService';
 import { ROUTES } from '../config/routes';
@@ -67,12 +68,126 @@ const BlogPost = () => {
     });
   };
 
-  // Tempo de leitura estimado
-  const getReadingTime = (content: string) => {
+  // Tempo de leitura estimado para blocos de conteúdo
+  const getReadingTimeFromBlocks = (contentBlocks: any[]) => {
     const wordsPerMinute = 200;
-    const words = content.split(' ').length;
+    const totalContent = contentBlocks
+      .map(block => block.content || '')
+      .join(' ');
+    const words = totalContent.split(' ').length;
     const minutes = Math.ceil(words / wordsPerMinute);
     return minutes;
+  };
+
+  // Renderizar blocos de conteúdo
+  const renderContentBlocks = (contentBlocks: any[]) => {
+    if (!contentBlocks || contentBlocks.length === 0) {
+      return <p>Conteúdo não disponível</p>;
+    }
+
+    return contentBlocks
+      .sort((a, b) => a.order - b.order)
+      .map((block, index) => {
+        switch (block.type) {
+          case 'title':
+            const titleLevel = block.metadata?.level || 1;
+            const titleClass = `text-2xl font-bold text-secondary-500 mb-4 ${
+              block.metadata?.alignment === 'center' ? 'text-center' :
+              block.metadata?.alignment === 'right' ? 'text-right' : 'text-left'
+            }`;
+            
+            if (titleLevel === 1) {
+              return <h1 key={block.id || index} className={titleClass}>{block.content}</h1>;
+            } else if (titleLevel === 2) {
+              return <h2 key={block.id || index} className={titleClass}>{block.content}</h2>;
+            } else if (titleLevel === 3) {
+              return <h3 key={block.id || index} className={titleClass}>{block.content}</h3>;
+            } else if (titleLevel === 4) {
+              return <h4 key={block.id || index} className={titleClass}>{block.content}</h4>;
+            } else if (titleLevel === 5) {
+              return <h5 key={block.id || index} className={titleClass}>{block.content}</h5>;
+            } else {
+              return <h6 key={block.id || index} className={titleClass}>{block.content}</h6>;
+            }
+
+          case 'subtitle':
+            const subtitleLevel = block.metadata?.level || 2;
+            const subtitleClass = `text-xl font-semibold text-secondary-600 mb-3 mt-6 ${
+              block.metadata?.alignment === 'center' ? 'text-center' :
+              block.metadata?.alignment === 'right' ? 'text-right' : 'text-left'
+            }`;
+            
+            if (subtitleLevel === 1) {
+              return <h1 key={block.id || index} className={subtitleClass}>{block.content}</h1>;
+            } else if (subtitleLevel === 2) {
+              return <h2 key={block.id || index} className={subtitleClass}>{block.content}</h2>;
+            } else if (subtitleLevel === 3) {
+              return <h3 key={block.id || index} className={subtitleClass}>{block.content}</h3>;
+            } else if (subtitleLevel === 4) {
+              return <h4 key={block.id || index} className={subtitleClass}>{block.content}</h4>;
+            } else if (subtitleLevel === 5) {
+              return <h5 key={block.id || index} className={subtitleClass}>{block.content}</h5>;
+            } else {
+              return <h6 key={block.id || index} className={subtitleClass}>{block.content}</h6>;
+            }
+
+          case 'paragraph':
+            return (
+              <p key={block.id || index} className="mb-4 leading-relaxed text-justify">
+                {block.content}
+              </p>
+            );
+
+          case 'image':
+            return (
+              <div key={block.id || index} className="my-6">
+                <img
+                  src={block.content}
+                  alt={block.metadata?.imageAlt || 'Imagem do post'}
+                  className="w-full h-auto rounded-lg shadow-md"
+                />
+                {block.metadata?.imageCaption && (
+                  <p className="text-sm text-neutral-500 text-center mt-2 italic">
+                    {block.metadata.imageCaption}
+                  </p>
+                )}
+              </div>
+            );
+
+          case 'list':
+            const ListTag = block.metadata?.listType === 'ordered' ? 'ol' : 'ul';
+            const items = block.content.split('\n').filter((item: string) => item.trim());
+            return (
+              <ListTag key={block.id || index} className="mb-4 ml-6">
+                {items.map((item: string, itemIndex: number) => (
+                  <li key={itemIndex} className="mb-2 flex items-start">
+                    {block.metadata?.listType === 'ordered' ? (
+                      <span className="mr-3 text-sm font-medium text-neutral-600 min-w-[20px]">
+                        {itemIndex + 1}.
+                      </span>
+                    ) : (
+                      <ArrowRight className="mr-3 text-primary-500" /> 
+                    )}
+                    <span className="flex-1">{item}</span>
+                  </li>
+                ))}
+              </ListTag>
+            );
+
+          case 'quote':
+            return (
+              <blockquote key={block.id || index} className="border-l-4 border-primary-500 pl-4 py-2 my-6 bg-neutral-50 italic">
+                <p className="text-lg mb-2">"{block.content}"</p>
+                {block.metadata?.quoteAuthor && (
+                  <p className="text-sm text-neutral-600">— {block.metadata.quoteAuthor}</p>
+                )}
+              </blockquote>
+            );
+
+          default:
+            return <p key={block.id || index} className="mb-4">{block.content}</p>;
+        }
+      });
   };
 
   // Compartilhar post
@@ -158,7 +273,7 @@ const BlogPost = () => {
               <span>{formatDate(post.publishedAt || post.createdAt)}</span>
               <span>•</span>
               <Clock size={16} />
-              <span>{getReadingTime(post.content)} min de leitura</span>
+              <span>{getReadingTimeFromBlocks(post.contentBlocks)} min de leitura</span>
             </div>
           </div>
           
@@ -215,10 +330,9 @@ const BlogPost = () => {
             
             {/* Conteúdo do Post */}
             <div className="prose prose-lg max-w-none">
-              <div 
-                className="text-neutral-700 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              />
+              <div className="text-neutral-700 leading-relaxed">
+                {renderContentBlocks(post.contentBlocks)}
+              </div>
             </div>
             
             {/* Tags */}

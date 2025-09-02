@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, User, ArrowRight, Search, Tag, Loader2 } from 'lucide-react';
+import { Calendar, User, ArrowRight, Search, Tag, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { postService } from '../services/postService';
-import type { Post } from '../types/blog';
+import { categoryService } from '../services/categoryService';
+import type { Post, Category } from '../types/blog';
 
 const Blog = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [currentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [pagination, setPagination] = useState({
+    total: 0,
+    page: 1,
+    limit: 10,
+    pages: 0
+  });
 
   const popularTags = [
     'MEI',
@@ -29,13 +38,21 @@ const Blog = () => {
         setLoading(true);
         setError(null);
         
-        // Carregar posts publicados
-        const postsResponse = await postService.getPosts(currentPage, 10, 'published');
-        setPosts(postsResponse.data);
+        // Carregar categorias
+        const categoriesResponse = await categoryService.getCategories();
+        setCategories(categoriesResponse);
         
-        // TODO: Implementar carregamento de categorias quando o serviço estiver disponível
-        // const categoriesResponse = await categoryService.getCategories();
-        // setCategories(categoriesResponse.data);
+        // Carregar posts com paginação
+        const postsResponse = await postService.getPosts(
+          currentPage, 
+          10, 
+          'published',
+          selectedCategory !== 'all' ? parseInt(selectedCategory) : undefined,
+          searchTerm || undefined
+        );
+        
+        setPosts(postsResponse.data);
+        setPagination(postsResponse.pagination);
       } catch (err) {
         console.error('Erro ao carregar dados:', err);
         setError('Erro ao carregar posts. Tente novamente.');
@@ -45,7 +62,83 @@ const Blog = () => {
     };
 
     loadData();
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, selectedCategory, searchTerm]);
+
+  // Função para buscar posts
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1); // Reset para primeira página ao buscar
+  };
+
+  // Função para mudar categoria
+  const handleCategoryChange = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setCurrentPage(1); // Reset para primeira página ao mudar categoria
+  };
+
+  // Função para mudar página
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Função para renderizar botões de paginação
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    const maxVisiblePages = 5;
+    
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(pagination.pages, startPage + maxVisiblePages - 1);
+    
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    // Botão Anterior
+    buttons.push(
+      <button
+        key="prev"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="px-3 py-2 text-neutral-500 hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+      >
+        <ChevronLeft size={16} className="mr-1" />
+        Anterior
+      </button>
+    );
+
+    // Botões de página
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={`px-3 py-2 rounded-lg transition-colors ${
+            i === currentPage
+              ? 'bg-accent-500 text-white'
+              : 'text-neutral-700 hover:bg-neutral-100'
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    // Botão Próximo
+    buttons.push(
+      <button
+        key="next"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === pagination.pages}
+        className="px-3 py-2 text-neutral-500 hover:text-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+      >
+        Próximo
+        <ChevronRight size={16} className="ml-1" />
+      </button>
+    );
+
+    return buttons;
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -91,24 +184,36 @@ const Blog = () => {
             <div className="lg:col-span-3">
               {/* Search and Filter */}
               <div className="mb-8">
-                <div className="flex flex-col sm:flex-row gap-4">
+                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-4">
                   <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400" size={20} />
                     <input
                       type="text"
                       placeholder="Buscar artigos..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent bg-white shadow-sm"
                     />
                   </div>
                   <select 
                     className="px-4 py-3 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent bg-white shadow-sm"
                     value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    onChange={(e) => handleCategoryChange(e.target.value)}
                   >
                     <option value="all">Todas as categorias</option>
-                    {/* TODO: Implementar quando o serviço de categorias estiver disponível */}
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.id.toString()}>
+                        {category.name}
+                      </option>
+                    ))}
                   </select>
-                </div>
+                  <button
+                    type="submit"
+                    className="px-6 py-3 bg-accent-500 text-white rounded-lg hover:bg-accent-600 transition-colors font-medium"
+                  >
+                    Buscar
+                  </button>
+                </form>
               </div>
 
               {/* Blog Posts Grid */}
@@ -135,11 +240,22 @@ const Blog = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {posts.map((post) => (
                     <article key={post.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02] border border-neutral-100">
-                      <div className="h-48 bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center">
-                        <div className="text-center text-neutral-500">
-                          <Tag size={48} className="mx-auto mb-2 text-primary-500" />
-                          <p>Imagem do artigo</p>
-                        </div>
+                      {/* Imagem do post */}
+                      <div className="h-48 overflow-hidden">
+                        {post.image ? (
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="h-full bg-gradient-to-br from-primary-50 to-accent-50 flex items-center justify-center">
+                            <div className="text-center text-neutral-500">
+                              <Tag size={48} className="mx-auto mb-2 text-primary-500" />
+                              <p>Sem imagem</p>
+                            </div>
+                          </div>
+                        )}
                       </div>
                       
                       <div className="p-6">
@@ -188,19 +304,18 @@ const Blog = () => {
               )}
 
               {/* Pagination */}
-              <div className="mt-12 flex justify-center">
-                <nav className="flex items-center space-x-2">
-                  <button className="px-3 py-2 text-neutral-500 hover:text-neutral-700 disabled:opacity-50 transition-colors">
-                    Anterior
-                  </button>
-                  <button className="px-3 py-2 bg-accent-500 text-white rounded-lg">1</button>
-                  <button className="px-3 py-2 text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors">2</button>
-                  <button className="px-3 py-2 text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors">3</button>
-                  <button className="px-3 py-2 text-neutral-500 hover:text-neutral-700 transition-colors">
-                    Próximo
-                  </button>
-                </nav>
-              </div>
+              {pagination.pages > 1 && pagination.total > 0 && (
+                <div className="mt-12 flex justify-center">
+                  <nav className="flex items-center space-x-2">
+                    {renderPaginationButtons()}
+                  </nav>
+                  <div className="ml-6 text-sm text-neutral-500 flex items-center">
+                    Página {currentPage} de {pagination.pages} 
+                    <span className="mx-2">•</span>
+                    {pagination.total} posts no total
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -212,17 +327,33 @@ const Blog = () => {
                 </h3>
                 <ul className="space-y-2">
                   <li>
-                    <Link
-                      to="#"
-                      className="text-neutral-600 hover:text-accent-600 transition-colors flex items-center justify-between group"
+                    <button
+                      onClick={() => handleCategoryChange('all')}
+                      className={`w-full text-left text-neutral-600 hover:text-accent-600 transition-colors flex items-center justify-between group ${
+                        selectedCategory === 'all' ? 'text-accent-600 font-medium' : ''
+                      }`}
                     >
                       <span className="group-hover:translate-x-1 transition-transform">Todas</span>
                       <span className="bg-accent-100 text-accent-700 text-xs px-2 py-1 rounded-full font-medium">
-                        {posts.length}
+                        {pagination.total}
                       </span>
-                    </Link>
+                    </button>
                   </li>
-                  {/* TODO: Implementar quando o serviço de categorias estiver disponível */}
+                  {categories.map((category) => (
+                    <li key={category.id}>
+                      <button
+                        onClick={() => handleCategoryChange(category.id.toString())}
+                        className={`w-full text-left text-neutral-600 hover:text-accent-600 transition-colors flex items-center justify-between group ${
+                          selectedCategory === category.id.toString() ? 'text-accent-600 font-medium' : ''
+                        }`}
+                      >
+                        <span className="group-hover:translate-x-1 transition-transform">{category.name}</span>
+                        <span className="bg-accent-100 text-accent-700 text-xs px-2 py-1 rounded-full font-medium">
+                          {category.postsCount}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
@@ -233,13 +364,13 @@ const Blog = () => {
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {popularTags.map((tag) => (
-                    <Link
+                    <button
                       key={tag}
-                      to="#"
+                      onClick={() => setSearchTerm(tag)}
                       className="bg-neutral-100 text-neutral-700 text-sm px-3 py-1 rounded-full hover:bg-accent-100 hover:text-accent-800 transition-all duration-300 hover:scale-105"
                     >
                       {tag}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </div>

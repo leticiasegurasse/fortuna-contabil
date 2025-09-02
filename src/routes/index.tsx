@@ -24,6 +24,7 @@ import AdminProtectedRoute from '../components/AdminProtectedRoute';
 import AdminLayout from '../layouts/AdminLayout';
 import BlogManagement from '../pages/admin/BlogManagement';
 import NewBlogPost from '../pages/admin/NewBlogPost';
+import EditBlogPost from '../pages/admin/EditBlogPost';
 import BlogCategories from '../pages/admin/BlogCategories';
 
 const AppRoutes = () => (
@@ -80,6 +81,17 @@ const AppRoutes = () => (
               <AdminProtectedRoute>
                 <AdminLayout>
                   <NewBlogPost />
+                </AdminLayout>
+              </AdminProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path={ROUTES.ADMIN_BLOG_EDIT} 
+            element={
+              <AdminProtectedRoute>
+                <AdminLayout>
+                  <EditBlogPost />
                 </AdminLayout>
               </AdminProtectedRoute>
             } 

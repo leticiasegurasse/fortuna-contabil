@@ -42,7 +42,7 @@ const AdminLogin = () => {
         
         // Redirecionar para o dashboard após 1 segundo
         setTimeout(() => {
-          navigate(ROUTES.ADMIN_DASHBOARD);
+          navigate(ROUTES.ADMIN_BLOG);
         }, 1000);
       } else {
         setError(result.message);

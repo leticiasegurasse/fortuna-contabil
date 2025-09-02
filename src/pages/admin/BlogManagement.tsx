@@ -443,7 +443,7 @@ const BlogManagement = () => {
                             <Eye className="h-4 w-4" />
                           </Link>
                           <Link
-                            to={`/admin/blog/edit/${post.id}`}
+                            to={ROUTES.ADMIN_BLOG_EDIT.replace(':id', post.id.toString())}
                             className="text-neutral-400 hover:text-blue-600"
                           >
                             <Edit className="h-4 w-4" />

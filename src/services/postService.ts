@@ -1,7 +1,7 @@
 // Serviço para gerenciar posts
 import { apiService } from './api';
 import { API_CONFIG } from '../config';
-import type { Post, PostFormData, ApiResponse, PaginatedResponse } from '../types/blog';
+import type { Post, PostFormData, ApiResponse, PaginatedResponse, ContentBlock } from '../types/blog';
 
 export class PostService {
   // Listar todos os posts
@@ -168,6 +168,81 @@ export class PostService {
       console.error('Erro ao incrementar visualizações:', error);
       // Não falha a aplicação se não conseguir incrementar visualizações
     }
+  }
+
+  // Utilitários para blocos de conteúdo
+  static generateBlockId(): string {
+    return `block_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  static createContentBlock(
+    type: ContentBlock['type'],
+    content: string,
+    order: number,
+    metadata?: ContentBlock['metadata']
+  ): ContentBlock {
+    return {
+      id: PostService.generateBlockId(),
+      type,
+      content,
+      order,
+      metadata
+    };
+  }
+
+  static reorderContentBlocks(blocks: ContentBlock[]): ContentBlock[] {
+    return blocks
+      .map((block, index) => ({ ...block, order: index + 1 }))
+      .sort((a, b) => a.order - b.order);
+  }
+
+  static addContentBlock(
+    blocks: ContentBlock[],
+    type: ContentBlock['type'],
+    content: string,
+    metadata?: ContentBlock['metadata']
+  ): ContentBlock[] {
+    const newBlock = PostService.createContentBlock(
+      type,
+      content,
+      blocks.length + 1,
+      metadata
+    );
+    return [...blocks, newBlock];
+  }
+
+  static removeContentBlock(blocks: ContentBlock[], blockId: string): ContentBlock[] {
+    return PostService.reorderContentBlocks(
+      blocks.filter(block => block.id !== blockId)
+    );
+  }
+
+  static updateContentBlock(
+    blocks: ContentBlock[],
+    blockId: string,
+    updates: Partial<ContentBlock>
+  ): ContentBlock[] {
+    return blocks.map(block =>
+      block.id === blockId ? { ...block, ...updates } : block
+    );
+  }
+
+  static moveContentBlock(
+    blocks: ContentBlock[],
+    blockId: string,
+    newOrder: number
+  ): ContentBlock[] {
+    const blockIndex = blocks.findIndex(block => block.id === blockId);
+    if (blockIndex === -1) return blocks;
+
+    const block = blocks[blockIndex];
+    const newBlocks = blocks.filter(b => b.id !== blockId);
+    
+    // Inserir na nova posição
+    newBlocks.splice(newOrder - 1, 0, { ...block, order: newOrder });
+    
+    // Reordenar todos os blocos
+    return PostService.reorderContentBlocks(newBlocks);
   }
 }
 

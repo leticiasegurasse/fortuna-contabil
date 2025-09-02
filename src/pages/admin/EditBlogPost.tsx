@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { 
   ArrowLeft, 
   Save, 
@@ -19,35 +19,29 @@ import {
 } from 'lucide-react';
 import { ROUTES } from '../../config/routes';
 import { categoryService, postService, authService, tagService } from '../../services';
-import type { Category, Tag, PostFormData, ContentBlock } from '../../types/blog';
+import type { Category, Tag, PostFormData, ContentBlock, Post } from '../../types/blog';
 import { generateSlug } from '../../utils/slug';
 
-const NewBlogPost = () => {
+const EditBlogPost = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const postId = parseInt(id || '0');
+  
   const [formData, setFormData] = useState<PostFormData>({
     title: '',
     excerpt: '',
-    contentBlocks: [
-      {
-        id: 'block_1',
-        type: 'title',
-        content: '',
-        order: 1,
-        metadata: {
-          level: 1,
-          alignment: 'left'
-        }
-      }
-    ],
+    contentBlocks: [],
     image: '',
     categoryId: '',
     status: 'draft',
     tagIds: []
   });
 
+  const [originalPost, setOriginalPost] = useState<Post | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [tagsLoading, setTagsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -60,11 +54,44 @@ const NewBlogPost = () => {
   const [blockSelectorContext, setBlockSelectorContext] = useState<{ blockId?: string; afterOrder?: number } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Buscar categorias e tags ao carregar a página
+  // Buscar post, categorias e tags ao carregar a página
   useEffect(() => {
-    fetchCategories();
-    fetchTags();
-  }, []);
+    if (postId) {
+      fetchPost();
+      fetchCategories();
+      fetchTags();
+    }
+  }, [postId]);
+
+  const fetchPost = async () => {
+    try {
+      setInitialLoading(true);
+      setError('');
+      
+      const post = await postService.getPostById(postId);
+      setOriginalPost(post);
+      
+      // Converter o post para o formato do formulário
+      setFormData({
+        title: post.title,
+        excerpt: post.excerpt || '',
+        contentBlocks: post.contentBlocks || [],
+        image: post.image || '',
+        categoryId: post.categoryId?.toString() || '',
+        status: post.status,
+        tagIds: post.tags?.map(tag => tag.id) || []
+      });
+      
+      if (post.image) {
+        setImagePreview(post.image);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar post:', error);
+      setError('Erro ao carregar post. Verifique se o ID é válido.');
+    } finally {
+      setInitialLoading(false);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -389,10 +416,10 @@ const NewBlogPost = () => {
         tagIds: formData.tagIds
       };
 
-      await postService.createPost(postData, token);
+      await postService.updatePost(postId, postData, token);
       navigate(ROUTES.ADMIN_BLOG);
     } catch (error) {
-      console.error('Erro ao criar post:', error);
+      console.error('Erro ao atualizar post:', error);
       
       if (error instanceof Error) {
         if (error.message.includes('request entity too large') || error.message.includes('Payload Too Large')) {
@@ -695,6 +722,35 @@ const NewBlogPost = () => {
     }
   };
 
+  // Loading inicial
+  if (initialLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary-500 mx-auto mb-4" />
+          <p className="text-neutral-600">Carregando post...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Post não encontrado
+  if (!originalPost) {
+    return (
+      <div className="text-center py-8">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Post não encontrado</h1>
+        <p className="text-neutral-600 mb-6">O post que você está tentando editar não existe ou foi removido.</p>
+        <Link
+          to={ROUTES.ADMIN_BLOG}
+          className="inline-flex items-center space-x-2 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Voltar para o Blog</span>
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div>
       {/* Page Header */}
@@ -709,10 +765,10 @@ const NewBlogPost = () => {
           
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-secondary-500">
-              Novo Post
+              Editar Post: {originalPost.title}
             </h1>
             <p className="text-neutral-500">
-              Crie um novo post usando blocos de conteúdo estruturado
+              Edite o post usando blocos de conteúdo estruturado
             </p>
           </div>
           
@@ -728,7 +784,7 @@ const NewBlogPost = () => {
               ) : (
                 <Save className="h-4 w-4" />
               )}
-              <span>{loading ? 'Salvando...' : 'Salvar'}</span>
+              <span>{loading ? 'Salvando...' : 'Salvar Alterações'}</span>
             </button>
           </div>
         </div>
@@ -894,123 +950,123 @@ const NewBlogPost = () => {
                 <label className="block text-sm font-medium text-secondary-500">
                   Blocos de Conteúdo *
                 </label>
-                                 <button
-                   type="button"
-                   onClick={() => {
-                     setBlockSelectorMode('add');
-                     setBlockSelectorContext(null);
-                     setShowBlockSelector(true);
-                   }}
-                   className="flex items-center space-x-2 px-3 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
-                 >
-                   <Plus className="h-4 w-4" />
-                   <span>Adicionar Bloco</span>
-                 </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBlockSelectorMode('add');
+                    setBlockSelectorContext(null);
+                    setShowBlockSelector(true);
+                  }}
+                  className="flex items-center space-x-2 px-3 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Adicionar Bloco</span>
+                </button>
               </div>
 
               {/* Block Selector Modal */}
               {showBlockSelector && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                   <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-                                         <h3 className="text-lg font-medium text-secondary-500 mb-4">
-                       {blockSelectorMode === 'add' ? 'Escolha o tipo de bloco' : 'Alterar tipo de bloco'}
-                     </h3>
-                                         <div className="grid grid-cols-2 gap-3">
-                       <button
-                         type="button"
-                         onClick={() => {
-                           if (blockSelectorMode === 'add') {
-                             addContentBlock('title', blockSelectorContext?.afterOrder);
-                           } else if (blockSelectorContext?.blockId) {
-                             changeBlockType(blockSelectorContext.blockId, 'title');
-                           }
-                         }}
-                         className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
-                       >
-                         <Type className="h-6 w-6 text-primary-500 mb-2" />
-                         <span className="text-sm font-medium">Título</span>
-                       </button>
-                       <button
-                         type="button"
-                         onClick={() => {
-                           if (blockSelectorMode === 'add') {
-                             addContentBlock('subtitle', blockSelectorContext?.afterOrder);
-                           } else if (blockSelectorContext?.blockId) {
-                             changeBlockType(blockSelectorContext.blockId, 'subtitle');
-                           }
-                         }}
-                         className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
-                       >
-                         <Type className="h-6 w-6 text-primary-500 mb-2" />
-                         <span className="text-sm font-medium">Subtítulo</span>
-                       </button>
-                       <button
-                         type="button"
-                         onClick={() => {
-                           if (blockSelectorMode === 'add') {
-                             addContentBlock('paragraph', blockSelectorContext?.afterOrder);
-                           } else if (blockSelectorContext?.blockId) {
-                             changeBlockType(blockSelectorContext.blockId, 'paragraph');
-                           }
-                         }}
-                         className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
-                       >
-                         <FileText className="h-6 w-6 text-primary-500 mb-2" />
-                         <span className="text-sm font-medium">Parágrafo</span>
-                       </button>
-                       <button
-                         type="button"
-                         onClick={() => {
-                           if (blockSelectorMode === 'add') {
-                             addContentBlock('image', blockSelectorContext?.afterOrder);
-                           } else if (blockSelectorContext?.blockId) {
-                             changeBlockType(blockSelectorContext.blockId, 'image');
-                           }
-                         }}
-                         className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
-                       >
-                         <Image className="h-6 w-6 text-primary-500 mb-2" />
-                         <span className="text-sm font-medium">Imagem</span>
-                       </button>
-                       <button
-                         type="button"
-                         onClick={() => {
-                           if (blockSelectorMode === 'add') {
-                             addContentBlock('list', blockSelectorContext?.afterOrder);
-                           } else if (blockSelectorContext?.blockId) {
-                             changeBlockType(blockSelectorContext.blockId, 'list');
-                           }
-                         }}
-                         className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
-                       >
-                         <List className="h-6 w-6 text-primary-500 mb-2" />
-                         <span className="text-sm font-medium">Lista</span>
-                       </button>
-                       <button
-                         type="button"
-                         onClick={() => {
-                           if (blockSelectorMode === 'add') {
-                             addContentBlock('quote', blockSelectorContext?.afterOrder);
-                           } else if (blockSelectorContext?.blockId) {
-                             changeBlockType(blockSelectorContext.blockId, 'quote');
-                           }
-                         }}
-                         className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
-                       >
-                         <Quote className="h-6 w-6 text-primary-500 mb-2" />
-                         <span className="text-sm font-medium">Citação</span>
-                       </button>
-                     </div>
-                     <button
-                       type="button"
-                       onClick={() => setShowBlockSelector(false)}
-                       className="w-full mt-4 px-4 py-2 border border-neutral-300 rounded-lg text-neutral-700 hover:bg-neutral-50 transition-colors"
-                     >
-                       Cancelar
-                     </button>
-                   </div>
-                 </div>
-               )}
+                    <h3 className="text-lg font-medium text-secondary-500 mb-4">
+                      {blockSelectorMode === 'add' ? 'Escolha o tipo de bloco' : 'Alterar tipo de bloco'}
+                    </h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (blockSelectorMode === 'add') {
+                            addContentBlock('title', blockSelectorContext?.afterOrder);
+                          } else if (blockSelectorContext?.blockId) {
+                            changeBlockType(blockSelectorContext.blockId, 'title');
+                          }
+                        }}
+                        className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                      >
+                        <Type className="h-6 w-6 text-primary-500 mb-2" />
+                        <span className="text-sm font-medium">Título</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (blockSelectorMode === 'add') {
+                            addContentBlock('subtitle', blockSelectorContext?.afterOrder);
+                          } else if (blockSelectorContext?.blockId) {
+                            changeBlockType(blockSelectorContext.blockId, 'subtitle');
+                          }
+                        }}
+                        className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                      >
+                        <Type className="h-6 w-6 text-primary-500 mb-2" />
+                        <span className="text-sm font-medium">Subtítulo</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (blockSelectorMode === 'add') {
+                            addContentBlock('paragraph', blockSelectorContext?.afterOrder);
+                          } else if (blockSelectorContext?.blockId) {
+                            changeBlockType(blockSelectorContext.blockId, 'paragraph');
+                          }
+                        }}
+                        className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                      >
+                        <FileText className="h-6 w-6 text-primary-500 mb-2" />
+                        <span className="text-sm font-medium">Parágrafo</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (blockSelectorMode === 'add') {
+                            addContentBlock('image', blockSelectorContext?.afterOrder);
+                          } else if (blockSelectorContext?.blockId) {
+                            changeBlockType(blockSelectorContext.blockId, 'image');
+                          }
+                        }}
+                        className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                      >
+                        <Image className="h-6 w-6 text-primary-500 mb-2" />
+                        <span className="text-sm font-medium">Imagem</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (blockSelectorMode === 'add') {
+                            addContentBlock('list', blockSelectorContext?.afterOrder);
+                          } else if (blockSelectorContext?.blockId) {
+                            changeBlockType(blockSelectorContext.blockId, 'list');
+                          }
+                        }}
+                        className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                      >
+                        <List className="h-6 w-6 text-primary-500 mb-2" />
+                        <span className="text-sm font-medium">Lista</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (blockSelectorMode === 'add') {
+                            addContentBlock('quote', blockSelectorContext?.afterOrder);
+                          } else if (blockSelectorContext?.blockId) {
+                            changeBlockType(blockSelectorContext.blockId, 'quote');
+                          }
+                        }}
+                        className="flex flex-col items-center p-4 border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
+                      >
+                        <Quote className="h-6 w-6 text-primary-500 mb-2" />
+                        <span className="text-sm font-medium">Citação</span>
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowBlockSelector(false)}
+                      className="w-full mt-4 px-4 py-2 border border-neutral-300 rounded-lg text-neutral-700 hover:bg-neutral-50 transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Content Blocks List */}
               <div className="space-y-4">
@@ -1019,74 +1075,74 @@ const NewBlogPost = () => {
                     key={block.id}
                     className="border border-neutral-200 rounded-lg p-4 bg-neutral-50"
                   >
-                                         {/* Block Header */}
-                     <div className="flex items-center justify-between mb-3">
-                       <div className="flex items-center space-x-2">
-                         <GripVertical className="h-4 w-4 text-neutral-400" />
-                         <div className="flex items-center space-x-2">
-                           {getBlockIcon(block.type)}
-                           <span className="text-sm font-medium text-neutral-700">
-                             {getBlockTypeName(block.type)} {block.order}
-                           </span>
-                         </div>
-                       </div>
-                       
-                       <div className="flex items-center space-x-2">
-                         {/* Alterar Tipo de Bloco */}
-                         <button
-                           type="button"
-                           onClick={() => {
-                             setBlockSelectorMode('change');
-                             setBlockSelectorContext({ blockId: block.id });
-                             setShowBlockSelector(true);
-                           }}
-                           className="p-1 text-neutral-500 hover:text-neutral-700"
-                           title="Alterar tipo de bloco"
-                         >
-                           <Type className="h-4 w-4" />
-                         </button>
-                         
-                         <button
-                           type="button"
-                           onClick={() => setEditingBlock(editingBlock?.id === block.id ? null : block)}
-                           className="p-1 text-neutral-500 hover:text-neutral-700"
-                           title="Editar bloco"
-                         >
-                           <Settings className="h-4 w-4" />
-                         </button>
-                         
-                         {index > 0 && (
-                           <button
-                             type="button"
-                             onClick={() => moveContentBlock(block.id, 'up')}
-                             className="p-1 text-neutral-500 hover:text-neutral-700"
-                             title="Mover para cima"
-                           >
-                             ↑
-                           </button>
-                         )}
-                         
-                         {index < formData.contentBlocks.length - 1 && (
-                           <button
-                             type="button"
-                             onClick={() => moveContentBlock(block.id, 'down')}
-                             className="p-1 text-neutral-500 hover:text-neutral-700"
-                             title="Mover para baixo"
-                           >
-                             ↓
-                           </button>
-                         )}
-                         
-                         <button
-                           type="button"
-                           onClick={() => removeContentBlock(block.id)}
-                           className="p-1 text-red-500 hover:text-red-700"
-                           title="Remover bloco"
-                         >
-                           <Trash2 className="h-4 w-4" />
-                         </button>
-                       </div>
-                     </div>
+                    {/* Block Header */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        <GripVertical className="h-4 w-4 text-neutral-400" />
+                        <div className="flex items-center space-x-2">
+                          {getBlockIcon(block.type)}
+                          <span className="text-sm font-medium text-neutral-700">
+                            {getBlockTypeName(block.type)} {block.order}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        {/* Alterar Tipo de Bloco */}
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBlockSelectorMode('change');
+                            setBlockSelectorContext({ blockId: block.id });
+                            setShowBlockSelector(true);
+                          }}
+                          className="p-1 text-neutral-500 hover:text-neutral-700"
+                          title="Alterar tipo de bloco"
+                        >
+                          <Type className="h-4 w-4" />
+                        </button>
+                        
+                        <button
+                          type="button"
+                          onClick={() => setEditingBlock(editingBlock?.id === block.id ? null : block)}
+                          className="p-1 text-neutral-500 hover:text-neutral-700"
+                          title="Editar bloco"
+                        >
+                          <Settings className="h-4 w-4" />
+                        </button>
+                        
+                        {index > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => moveContentBlock(block.id, 'up')}
+                            className="p-1 text-neutral-500 hover:text-neutral-700"
+                            title="Mover para cima"
+                          >
+                            ↑
+                          </button>
+                        )}
+                        
+                        {index < formData.contentBlocks.length - 1 && (
+                          <button
+                            type="button"
+                            onClick={() => moveContentBlock(block.id, 'down')}
+                            className="p-1 text-neutral-500 hover:text-neutral-700"
+                            title="Mover para baixo"
+                          >
+                            ↓
+                          </button>
+                        )}
+                        
+                        <button
+                          type="button"
+                          onClick={() => removeContentBlock(block.id)}
+                          className="p-1 text-red-500 hover:text-red-700"
+                          title="Remover bloco"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
 
                     {/* Block Content */}
                     {editingBlock?.id === block.id ? (
@@ -1104,41 +1160,41 @@ const NewBlogPost = () => {
                       </div>
                     ) : (
                       <div className="min-h-[40px] flex items-center">
-                                                 {block.content ? (
-                           <div className="text-sm text-neutral-600">
-                             {block.type === 'image' ? (
-                               <div className="flex items-center space-x-2">
-                                 <span>🖼️</span>
-                                 {block.content.startsWith('data:image') ? (
-                                   <span className="text-blue-600">Imagem local carregada</span>
-                                 ) : (
-                                   <span className="text-green-600">{block.content.substring(0, 50)}{block.content.length > 50 ? '...' : ''}</span>
-                                 )}
-                               </div>
-                             ) : (
-                               <span>{block.content.substring(0, 100)}{block.content.length > 100 ? '...' : ''}</span>
-                             )}
-                           </div>
-                         ) : (
-                           <span className="text-neutral-400 italic">Clique em editar para adicionar conteúdo</span>
-                         )}
+                        {block.content ? (
+                          <div className="text-sm text-neutral-600">
+                            {block.type === 'image' ? (
+                              <div className="flex items-center space-x-2">
+                                <span>🖼️</span>
+                                {block.content.startsWith('data:image') ? (
+                                  <span className="text-blue-600">Imagem local carregada</span>
+                                ) : (
+                                  <span className="text-green-600">{block.content.substring(0, 50)}{block.content.length > 50 ? '...' : ''}</span>
+                                )}
+                              </div>
+                            ) : (
+                              <span>{block.content.substring(0, 100)}{block.content.length > 100 ? '...' : ''}</span>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-neutral-400 italic">Clique em editar para adicionar conteúdo</span>
+                        )}
                       </div>
                     )}
 
-                                         {/* Add Block After */}
-                     <div className="mt-3 pt-3 border-t border-neutral-200">
-                       <button
-                         type="button"
-                         onClick={() => {
-                           setBlockSelectorMode('add');
-                           setBlockSelectorContext({ afterOrder: block.order });
-                           setShowBlockSelector(true);
-                         }}
-                         className="text-xs text-primary-600 hover:text-primary-700 hover:underline"
-                       >
-                         + Adicionar bloco após este
-                       </button>
-                     </div>
+                    {/* Add Block After */}
+                    <div className="mt-3 pt-3 border-t border-neutral-200">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setBlockSelectorMode('add');
+                          setBlockSelectorContext({ afterOrder: block.order });
+                          setShowBlockSelector(true);
+                        }}
+                        className="text-xs text-primary-600 hover:text-primary-700 hover:underline"
+                      >
+                        + Adicionar bloco após este
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -1256,6 +1312,12 @@ const NewBlogPost = () => {
               
               <div className="space-y-3 text-sm text-neutral-600">
                 <div className="flex justify-between">
+                  <span>ID:</span>
+                  <span className="font-mono bg-neutral-100 px-2 py-1 rounded text-xs">
+                    {postId}
+                  </span>
+                </div>
+                <div className="flex justify-between">
                   <span>Slug:</span>
                   <span className="font-mono bg-neutral-100 px-2 py-1 rounded text-xs">
                     {formData.title ? generateSlug(formData.title) : 'auto-gerado'}
@@ -1289,6 +1351,18 @@ const NewBlogPost = () => {
                     }
                   </span>
                 </div>
+                <div className="flex justify-between">
+                  <span>Criado em:</span>
+                  <span className="text-xs">
+                    {originalPost.createdAt ? new Date(originalPost.createdAt).toLocaleDateString('pt-BR') : 'N/A'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Atualizado em:</span>
+                  <span className="text-xs">
+                    {originalPost.updatedAt ? new Date(originalPost.updatedAt).toLocaleDateString('pt-BR') : 'N/A'}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -1314,4 +1388,4 @@ const NewBlogPost = () => {
   );
 };
 
-export default NewBlogPost;
+export default EditBlogPost;
