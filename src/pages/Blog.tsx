@@ -4,6 +4,7 @@ import { Calendar, User, ArrowRight, Search, Tag, Loader2, ChevronLeft, ChevronR
 import { postService } from '../services/postService';
 import { categoryService } from '../services/categoryService';
 import type { Post, Category } from '../types/blog';
+import NewsletterSignup from '../components/NewsletterSignup';
 
 const Blog = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -357,54 +358,10 @@ const Blog = () => {
                 </ul>
               </div>
 
-              {/* Popular Tags */}
-              <div className="bg-white rounded-xl shadow-lg p-6 border border-neutral-100">
-                <h3 className="text-lg font-bold text-secondary-500 mb-4">
-                  Tags Populares
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {popularTags.map((tag) => (
-                    <button
-                      key={tag}
-                      onClick={() => setSearchTerm(tag)}
-                      className="bg-neutral-100 text-neutral-700 text-sm px-3 py-1 rounded-full hover:bg-accent-100 hover:text-accent-800 transition-all duration-300 hover:scale-105"
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
-              {/* Newsletter 
-              <div className="bg-gradient-to-br from-accent-500 to-accent-600 text-white rounded-xl p-6 relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                  <div className="absolute top-0 left-0 w-20 h-20 bg-primary-400 rounded-full -translate-x-10 -translate-y-10"></div>
-                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-primary-300 rounded-full translate-x-8 translate-y-8"></div>
-                </div>
-                
-                <div className="relative">
-                  <h3 className="text-lg font-bold mb-4">
-                    Fique por dentro!
-                  </h3>
-                  <p className="text-accent-100 mb-4">
-                    Receba nossas novidades e dicas exclusivas no seu e-mail.
-                  </p>
-                  <form className="space-y-3">
-                    <input
-                      type="email"
-                      placeholder="Seu e-mail"
-                      className="w-full px-4 py-3 rounded-lg text-secondary-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                    />
-                    <button
-                      type="submit"
-                      className="w-full bg-primary-500 text-secondary-500 py-3 px-4 rounded-lg font-semibold hover:bg-primary-600 transition-all duration-300 hover:scale-105 shadow-lg"
-                    >
-                      Inscrever-se
-                    </button>
-                  </form>
-                </div>
-              </div>
-              */}
+            {/* Newsletter */}
+            <NewsletterSignup variant="accent" />
+              
 
               {/* Recent Posts */}
               <div className="bg-white rounded-xl shadow-lg p-6 border border-neutral-100">

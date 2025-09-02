@@ -77,11 +77,11 @@ const Footer = () => {
                   Sobre Nós
                 </Link>
               </li>
-              {/*<li>
+              <li>
                 <Link to={ROUTES.BLOG} className="hover:text-white transition-colors">
                   Blog
                 </Link>
-              </li>*/}
+              </li>
               <li>
                 <Link to={ROUTES.CONTACT} className="hover:text-white transition-colors">
                   Contato

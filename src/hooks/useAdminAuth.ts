@@ -32,8 +32,13 @@ export const useAdminAuth = (): UseAdminAuthReturn => {
       const storedToken = localStorage.getItem('adminToken');
       const storedUser = localStorage.getItem('adminUser');
 
+      console.log('🔍 Verificando autenticação...');
+      console.log('📝 Token armazenado:', storedToken ? 'Sim' : 'Não');
+      console.log('👤 Usuário armazenado:', storedUser ? 'Sim' : 'Não');
+
       if (storedToken && storedUser) {
         // Verificar se o token ainda é válido
+        console.log('🔐 Verificando validade do token...');
         const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/verify-token`, {
           headers: {
             'Authorization': `Bearer ${storedToken}`,
@@ -41,19 +46,25 @@ export const useAdminAuth = (): UseAdminAuthReturn => {
           },
         });
 
+        console.log('📡 Resposta da verificação:', response.status, response.statusText);
+
         if (response.ok) {
+          console.log('✅ Token válido, autenticação confirmada');
           setToken(storedToken);
           setUser(JSON.parse(storedUser));
           return true;
         } else {
+          console.log('❌ Token inválido, limpando dados');
           // Token inválido, limpar dados
           logout();
           return false;
         }
+      } else {
+        console.log('⚠️ Nenhum token ou usuário encontrado');
       }
       return false;
     } catch (error) {
-      console.error('Erro ao verificar autenticação:', error);
+      console.error('❌ Erro ao verificar autenticação:', error);
       logout();
       return false;
     } finally {

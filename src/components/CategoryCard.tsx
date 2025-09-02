@@ -25,27 +25,8 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="bg-white rounded-lg shadow-sm border border-neutral-200 p-6 hover:shadow-md transition-shadow"
+      style={{ borderTop: `2px solid ${category.color}` }}
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center space-x-3">
-          <input
-            type="checkbox"
-            checked={isSelected}
-            onChange={() => onSelect(category.id)}
-            className="rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
-          />
-          <div 
-            className="w-4 h-4 rounded-full"
-            style={{ backgroundColor: category.color }}
-          />
-        </div>
-        
-        <div className="relative">
-          <button className="p-1 rounded-lg text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100">
-            <MoreVertical className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
 
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-secondary-500 mb-2">

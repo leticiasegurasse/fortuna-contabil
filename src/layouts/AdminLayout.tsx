@@ -7,7 +7,8 @@ import {
   LogOut, 
   FileText, 
   ChevronDown,
-  Home
+  Home,
+  Mail
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAdminAuth } from '../hooks/useAdminAuth';
@@ -58,6 +59,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         { name: 'Categorias', href: ROUTES.ADMIN_BLOG_CATEGORIES, current: location.pathname === ROUTES.ADMIN_BLOG_CATEGORIES },
         { name: 'Tags', href: ROUTES.ADMIN_BLOG_TAGS, current: location.pathname === ROUTES.ADMIN_BLOG_TAGS }
       ]
+    },
+    {
+      name: 'Newsletter',
+      icon: Mail,
+      current: location.pathname === ROUTES.ADMIN_NEWSLETTER,
+      href: ROUTES.ADMIN_NEWSLETTER
     },
     /*{
       name: 'Clientes',

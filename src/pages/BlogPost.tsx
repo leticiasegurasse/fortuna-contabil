@@ -17,6 +17,7 @@ import {
 import { postService } from '../services/postService';
 import { ROUTES } from '../config/routes';
 import type { Post } from '../types/blog';
+import NewsletterSignup from '../components/NewsletterSignup';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -434,34 +435,7 @@ const BlogPost = () => {
             )}
             
             {/* Newsletter */}
-            <div className="bg-gradient-to-br from-accent-500 to-accent-600 text-white rounded-xl p-6 relative overflow-hidden">
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 left-0 w-20 h-20 bg-primary-400 rounded-full -translate-x-10 -translate-y-10"></div>
-                <div className="absolute bottom-0 right-0 w-16 h-16 bg-primary-300 rounded-full translate-x-8 translate-y-8"></div>
-              </div>
-              
-              <div className="relative">
-                <h3 className="text-lg font-bold mb-4">
-                  Fique por dentro!
-                </h3>
-                <p className="text-accent-100 mb-4">
-                  Receba nossas novidades e dicas exclusivas no seu e-mail.
-                </p>
-                <form className="space-y-3">
-                  <input
-                    type="email"
-                    placeholder="Seu e-mail"
-                    className="w-full px-4 py-3 rounded-lg text-secondary-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full bg-primary-500 text-secondary-500 py-3 px-4 rounded-lg font-semibold hover:bg-primary-600 transition-all duration-300 hover:scale-105 shadow-lg"
-                  >
-                    Inscrever-se
-                  </button>
-                </form>
-              </div>
-            </div>
+            <NewsletterSignup variant="accent" />
             
             {/* CTA */}
             <div className="bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-xl p-6 text-center">

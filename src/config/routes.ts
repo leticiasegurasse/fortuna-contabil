@@ -20,5 +20,6 @@ export const ROUTES = {
   ADMIN_BLOG_NEW: '/admin/blog/novo',
   ADMIN_BLOG_EDIT: '/admin/blog/editar/:id',
   ADMIN_BLOG_CATEGORIES: '/admin/blog/categorias',
-  ADMIN_BLOG_TAGS: '/admin/blog/tags'
+  ADMIN_BLOG_TAGS: '/admin/blog/tags',
+  ADMIN_NEWSLETTER: '/admin/newsletter'
 }; 
