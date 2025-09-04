@@ -137,6 +137,14 @@ class UploadService {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const img = new Image();
+      let objectURL: string | null = null;
+
+      // Limpar recursos em caso de erro
+      const cleanup = () => {
+        if (objectURL) {
+          URL.revokeObjectURL(objectURL);
+        }
+      };
 
       img.onload = () => {
         try {
@@ -152,30 +160,50 @@ class UploadService {
           canvas.height = height;
           
           if (ctx) {
+            // Configurar contexto para melhor qualidade
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
             ctx.drawImage(img, 0, 0, width, height);
             
             // Converter para blob com qualidade especificada
             canvas.toBlob(
               (blob) => {
+                cleanup();
                 if (blob) {
                   resolve(blob);
                 } else {
-                  reject(new Error('Falha ao comprimir imagem'));
+                  reject(new Error('Falha ao comprimir imagem - blob é null'));
                 }
               },
               'image/jpeg',
               quality
             );
           } else {
+            cleanup();
             reject(new Error('Contexto do canvas não disponível'));
           }
         } catch (error) {
-          reject(error);
+          cleanup();
+          reject(new Error(`Erro durante compressão: ${error instanceof Error ? error.message : 'Erro desconhecido'}`));
         }
       };
 
-      img.onerror = () => reject(new Error('Falha ao carregar imagem'));
-      img.src = URL.createObjectURL(file);
+      img.onerror = () => {
+        cleanup();
+        reject(new Error('Falha ao carregar imagem - arquivo pode estar corrompido ou em formato não suportado'));
+      };
+
+      // Configurar crossOrigin para evitar problemas de CORS
+      img.crossOrigin = 'anonymous';
+      
+      try {
+        objectURL = URL.createObjectURL(file);
+        img.src = objectURL;
+      } catch (error) {
+        cleanup();
+        reject(new Error(`Erro ao criar object URL: ${error instanceof Error ? error.message : 'Erro desconhecido'}`));
+      }
     });
   }
 }
