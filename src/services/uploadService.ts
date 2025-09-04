@@ -85,13 +85,16 @@ class UploadService {
       return filename;
     }
     
+    // Usar a mesma configuração da API
+    const baseURL = import.meta.env.VITE_API_URL || 'https://api.fortunacontabil.com.br';
+    
     // Se é um caminho relativo, adiciona a base da API
     if (filename.startsWith('/uploads/')) {
-      return `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}${filename}`;
+      return `${baseURL}${filename}`;
     }
     
     // Se é apenas o nome do arquivo, constrói o caminho completo
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/uploads/${filename}`;
+    return `${baseURL}/uploads/${filename}`;
   }
 
   /**
