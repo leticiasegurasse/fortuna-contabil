@@ -11,7 +11,6 @@ import {
   Calendar,
   AlertTriangle,
   TrendingUp,
-  TrendingDown,
   Eye,
   Clock,
   CheckCircle,
