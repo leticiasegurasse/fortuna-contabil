@@ -21,6 +21,35 @@ class UploadService {
   private baseURL = '/api/upload';
 
   /**
+   * Sanitiza uma URL de imagem, convertendo localhost para URL de produção
+   * @param url - URL a ser sanitizada
+   * @returns URL sanitizada
+   */
+  private sanitizeImageUrl(url: string): string {
+    if (!url) return url;
+    
+    const productionBaseURL = import.meta.env.VITE_API_URL || 'https://api.fortunacontabil.com.br';
+    
+    // Se contém localhost, substituir pela URL de produção
+    if (url.includes('localhost:3001')) {
+      const path = url.split('/uploads/')[1];
+      if (path) {
+        return `${productionBaseURL}/uploads/${path}`;
+      }
+    }
+    
+    // Se contém http://localhost (sem porta), também substituir
+    if (url.includes('http://localhost')) {
+      const path = url.split('/uploads/')[1];
+      if (path) {
+        return `${productionBaseURL}/uploads/${path}`;
+      }
+    }
+    
+    return url;
+  }
+
+  /**
    * Faz upload de uma imagem para o servidor
    * @param file - Arquivo de imagem para upload
    * @param token - Token de autenticação
@@ -80,21 +109,24 @@ class UploadService {
    * @returns URL completa da imagem
    */
   getImageUrl(filename: string): string {
-    // Se já é uma URL completa, retorna como está
-    if (filename.startsWith('http://') || filename.startsWith('https://')) {
-      return filename;
-    }
+    // Primeiro, sanitizar a URL se necessário
+    const sanitizedUrl = this.sanitizeImageUrl(filename);
     
     // Usar a mesma configuração da API
     const baseURL = import.meta.env.VITE_API_URL || 'https://api.fortunacontabil.com.br';
     
+    // Se já é uma URL completa e sanitizada, retornar como está
+    if (sanitizedUrl.startsWith('http://') || sanitizedUrl.startsWith('https://')) {
+      return sanitizedUrl;
+    }
+    
     // Se é um caminho relativo, adiciona a base da API
-    if (filename.startsWith('/uploads/')) {
-      return `${baseURL}${filename}`;
+    if (sanitizedUrl.startsWith('/uploads/')) {
+      return `${baseURL}${sanitizedUrl}`;
     }
     
     // Se é apenas o nome do arquivo, constrói o caminho completo
-    return `${baseURL}/uploads/${filename}`;
+    return `${baseURL}/uploads/${sanitizedUrl}`;
   }
 
   /**
