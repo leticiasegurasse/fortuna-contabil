@@ -41,6 +41,7 @@ const EditBlogPost = () => {
   const [originalPost, setOriginalPost] = useState<Post | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [tagSearchTerm, setTagSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
@@ -115,7 +116,8 @@ const EditBlogPost = () => {
       setTagsLoading(true);
       setError('');
       
-      const response = await tagService.getTags();
+      // Carregar todas as tags (sem limite de paginação)
+      const response = await tagService.getTags(1, 1000);
       setTags(response.data || []);
     } catch (error) {
       console.error('Erro ao buscar tags:', error);
@@ -142,6 +144,11 @@ const EditBlogPost = () => {
         : prev.tagIds.filter(id => id !== tagId)
     }));
   };
+
+  // Filtrar tags baseado no termo de busca
+  const filteredTags = tags.filter(tag => 
+    tag.name.toLowerCase().includes(tagSearchTerm.toLowerCase())
+  );
 
   // Funções para gerenciar blocos de conteúdo
   const addContentBlock = (type: ContentBlock['type'], afterOrder?: number) => {
@@ -1300,30 +1307,48 @@ const EditBlogPost = () => {
                       <span>Carregando tags...</span>
                     </div>
                   ) : (
-                    <div className="max-h-48 overflow-y-auto border border-neutral-300 rounded-lg p-3 space-y-2">
-                      {tags.length === 0 ? (
-                        <p className="text-sm text-neutral-500 text-center py-4">
-                          Nenhuma tag disponível
-                        </p>
-                      ) : (
-                        tags.map((tag) => (
-                          <label key={tag.id} className="flex items-center space-x-2 cursor-pointer hover:bg-neutral-50 p-2 rounded">
-                            <input
-                              type="checkbox"
-                              checked={formData.tagIds.includes(tag.id)}
-                              onChange={(e) => handleTagChange(tag.id, e.target.checked)}
-                              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
-                            />
-                            <span className="text-sm text-neutral-700">
-                              {tag.name}
-                            </span>
-                          </label>
-                        ))
-                      )}
-                    </div>
+                    <>
+                      {/* Campo de busca de tags */}
+                      <div className="mb-3">
+                        <input
+                          type="text"
+                          placeholder="Buscar tags..."
+                          value={tagSearchTerm}
+                          onChange={(e) => setTagSearchTerm(e.target.value)}
+                          className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                      </div>
+                      
+                      <div className="max-h-48 overflow-y-auto border border-neutral-300 rounded-lg p-3 space-y-2">
+                        {filteredTags.length === 0 ? (
+                          <p className="text-sm text-neutral-500 text-center py-4">
+                            {tagSearchTerm ? 'Nenhuma tag encontrada' : 'Nenhuma tag disponível'}
+                          </p>
+                        ) : (
+                          filteredTags.map((tag) => (
+                            <label key={tag.id} className="flex items-center space-x-2 cursor-pointer hover:bg-neutral-50 p-2 rounded">
+                              <input
+                                type="checkbox"
+                                checked={formData.tagIds.includes(tag.id)}
+                                onChange={(e) => handleTagChange(tag.id, e.target.checked)}
+                                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-neutral-300 rounded"
+                              />
+                              <span className="text-sm text-neutral-700">
+                                {tag.name}
+                              </span>
+                            </label>
+                          ))
+                        )}
+                      </div>
+                    </>
                   )}
                   <p className="mt-1 text-sm text-neutral-500">
                     Selecione as tags relevantes para o post
+                    {tagSearchTerm && filteredTags.length > 0 && (
+                      <span className="ml-2 text-primary-600">
+                        ({filteredTags.length} de {tags.length} tags)
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
